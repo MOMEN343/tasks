@@ -41,7 +41,7 @@ class Onboarding1 extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: "Almarai",
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                         ),
                         Text(
