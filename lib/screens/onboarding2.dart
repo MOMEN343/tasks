@@ -41,7 +41,7 @@ class Onboarding2 extends StatelessWidget {
                           "تابع المدعوين وتفاعلهم بكل سهولة",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: "Almarai",
                           ),
                         ),

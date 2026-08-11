@@ -39,7 +39,7 @@ class Onboarding3 extends StatelessWidget {
                           "استقبل الإهداءات الرقمية بكل راحة وأمان",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: "Almarai",
                           ),
                         ),
@@ -69,9 +69,9 @@ class Onboarding3 extends StatelessWidget {
 
                           minimumSize: Size(
                             MediaQuery.of(context).size.width,
-                            0,
+                            44,
                           ),
-                          padding: EdgeInsets.all(14),
+                          // padding: EdgeInsets.all(14),
                         ),
 
                         onPressed: () {},
@@ -80,6 +80,7 @@ class Onboarding3 extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
+                            fontSize: 16,
                             fontFamily: "Almarai",
                           ),
                         ),
