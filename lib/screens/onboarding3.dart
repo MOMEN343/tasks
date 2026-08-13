@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:tasks/core/managers/manager_colors.dart';
+import 'package:tasks/core/managers/manager_font_family.dart';
+import 'package:tasks/core/managers/manager_images.dart';
+import 'package:tasks/core/managers/manager_styles.dart';
 import 'package:tasks/widgets/onboarding_indicator.dart';
 import 'package:tasks/widgets/skip_button.dart';
 
@@ -27,8 +31,10 @@ class Onboarding3 extends StatelessWidget {
                   spacing: 20,
                   children: [
                     Center(
-                      child: Image(
-                        image: AssetImage("assets/images/Onboarding3.png"),
+                      child: SvgPicture.asset(
+                        ManagerImages.onboarding3,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.4,
                       ),
                     ),
 
@@ -38,20 +44,12 @@ class Onboarding3 extends StatelessWidget {
                       children: [
                         Text(
                           "استقبل الإهداءات الرقمية بكل راحة وأمان",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            fontFamily: "Almarai",
-                          ),
+                          style: ManagerStyles.bold,
                         ),
                         Text(
                           textAlign: TextAlign.center,
                           "دع ضيوفك يشاركون فرحتك بإرسال الهدايا المالية مباشرة عبر التطبيق، وكل المبالغ تُجمع في محفظة آمنة مع سجل ذكي يذكّرك بمن أهدى لك سابقاً لتبادل الودّ في مناسبات المستقبل.",
-                          style: TextStyle(
-                            color: ManagerColors.grey,
-                            fontSize: 12,
-                            fontFamily: "Almarai",
-                          ),
+                          style: ManagerStyles.regular,
                         ),
                       ],
                     ),
@@ -64,6 +62,7 @@ class Onboarding3 extends StatelessWidget {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ManagerColors.primary,
+
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -76,15 +75,7 @@ class Onboarding3 extends StatelessWidget {
                         ),
 
                         onPressed: () {},
-                        child: Text(
-                          "التسجيل الآن",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            fontFamily: "Almarai",
-                          ),
-                        ),
+                        child: Text("التسجيل الآن", style: ManagerStyles.title),
                       ),
                       TextButton(
                         onPressed: () {},
@@ -94,7 +85,7 @@ class Onboarding3 extends StatelessWidget {
                             color: ManagerColors.grey,
                             decoration: TextDecoration.underline,
                             decorationColor: ManagerColors.grey,
-                            fontFamily: "Almarai",
+                            fontFamily: ManagerFontFamily.almarai,
                           ),
                         ),
                       ),

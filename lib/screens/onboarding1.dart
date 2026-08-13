@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/core/managers/manager_colors.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:tasks/core/managers/manager_images.dart';
+import 'package:tasks/core/managers/manager_styles.dart';
 import 'package:tasks/widgets/arrow_button.dart';
 import 'package:tasks/widgets/onboarding_indicator.dart';
 import 'package:tasks/widgets/skip_button.dart';
 
 class Onboarding1 extends StatelessWidget {
-  const Onboarding1({super.key});
+  final PageController controller;
+  const Onboarding1({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +30,10 @@ class Onboarding1 extends StatelessWidget {
                   spacing: 20,
                   children: [
                     Center(
-                      child: Image(
-                        image: AssetImage("assets/images/Onboarding1.png"),
+                      child: SvgPicture.asset(
+                        ManagerImages.onboarding1,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.4,
                       ),
                     ),
 
@@ -38,27 +43,27 @@ class Onboarding1 extends StatelessWidget {
                       children: [
                         Text(
                           "نظم مناسباتك بسهولة وذكاء",
-                          style: TextStyle(
-                            fontFamily: "Almarai",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
+                          style: ManagerStyles.bold,
                         ),
                         Text(
                           textAlign: TextAlign.center,
                           "ارفع صورة دعوتك الجاهزة، أضف تفاصيل المناسبة مثل الاسم والمكان والموعد، ودع التطبيق يتولى إرسالها لجميع المدعوين بطريقة أنيقة ومنظمة.",
-                          style: TextStyle(
-                            color: ManagerColors.grey,
-                            fontSize: 12,
-                            fontFamily: "Almarai",
-                          ),
+                          style: ManagerStyles.regular,
                         ),
                       ],
                     ),
                   ],
                 ),
 
-                ArrowButton(icon: Icons.arrow_back),
+                ArrowButton(
+                  icon: Icons.arrow_back,
+                  onPressed: () {
+                    controller.nextPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                ),
               ],
             ),
           ),
