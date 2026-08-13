@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
 
 class SkipButton extends StatelessWidget {
   const SkipButton({super.key});
@@ -9,7 +10,7 @@ class SkipButton extends StatelessWidget {
     return TextButton(
       onPressed: () {},
       child: Text(
-        "تخطي",
+        ManagerStrings.skip,
         style: TextStyle(
           color: ManagerColors.grey,
           decoration: TextDecoration.underline,

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 
 class ArrowButton extends StatelessWidget {
+  final VoidCallback onPressed;
   final IconData icon;
 
-  const ArrowButton({super.key, required this.icon});
+  const ArrowButton({super.key, required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +16,8 @@ class ArrowButton extends StatelessWidget {
         minimumSize: Size(0, 0),
         padding: EdgeInsets.all(12),
       ),
-      onPressed: () {},
-      child: Icon(icon, color: Colors.white),
+      onPressed: onPressed,
+      child: Icon(icon, color: ManagerColors.buttonTextColor),
     );
   }
 }
