@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/constants/app_color.dart';
+import 'package:tasks/core/managers/manager_colors.dart';
 
 class OnboardingIndicator extends StatelessWidget {
   final AlignmentGeometry align;
@@ -14,12 +14,12 @@ class OnboardingIndicator extends StatelessWidget {
         Container(
           width: double.infinity,
           height: 2,
-          color: AppColors.lightGrey,
+          color: ManagerColors.lightGrey,
         ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: AppColors.primary,
+            color: ManagerColors.primary,
           ),
           width: MediaQuery.of(context).size.width * 0.3,
           height: 4,

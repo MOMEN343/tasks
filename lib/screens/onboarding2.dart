@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/constants/app_color.dart';
+import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/screens/onboarding1.dart';
 import 'package:tasks/widgets/arrow_button.dart';
 import 'package:tasks/widgets/onboarding_indicator.dart';
@@ -49,7 +49,7 @@ class Onboarding2 extends StatelessWidget {
                           textAlign: TextAlign.center,
                           "اعرف من أكّد الحضور أو اعتذر فوراً، وراقب الإحصائيات لحظة بلحظة لتكون على اطلاع دائم بعدد الحاضرين، وتدير مناسبتك بدون فوضى أو تكرار.",
                           style: TextStyle(
-                            color: AppColors.grey,
+                            color: ManagerColors.grey,
                             fontSize: 12,
                             fontFamily: "Almarai",
                           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/constants/app_color.dart';
+import 'package:tasks/core/managers/manager_colors.dart';
 
 class SkipButton extends StatelessWidget {
   const SkipButton({super.key});
@@ -11,9 +11,9 @@ class SkipButton extends StatelessWidget {
       child: Text(
         "تخطي",
         style: TextStyle(
-          color: AppColors.grey,
+          color: ManagerColors.grey,
           decoration: TextDecoration.underline,
-          decorationColor: AppColors.grey,
+          decorationColor: ManagerColors.grey,
           fontFamily: "Almarai",
         ),
       ),
