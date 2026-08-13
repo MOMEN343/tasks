@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/constants/app_color.dart';
+import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/widgets/arrow_button.dart';
 import 'package:tasks/widgets/onboarding_indicator.dart';
 import 'package:tasks/widgets/skip_button.dart';
@@ -48,7 +48,7 @@ class Onboarding1 extends StatelessWidget {
                           textAlign: TextAlign.center,
                           "ارفع صورة دعوتك الجاهزة، أضف تفاصيل المناسبة مثل الاسم والمكان والموعد، ودع التطبيق يتولى إرسالها لجميع المدعوين بطريقة أنيقة ومنظمة.",
                           style: TextStyle(
-                            color: AppColors.grey,
+                            color: ManagerColors.grey,
                             fontSize: 12,
                             fontFamily: "Almarai",
                           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/constants/app_color.dart';
+import 'package:tasks/core/managers/manager_colors.dart';
 
 class ArrowButton extends StatelessWidget {
   final IconData icon;
@@ -10,7 +10,7 @@ class ArrowButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
+        backgroundColor: ManagerColors.primary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         minimumSize: Size(0, 0),
         padding: EdgeInsets.all(12),

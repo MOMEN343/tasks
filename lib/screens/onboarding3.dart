@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/constants/app_color.dart';
+
+import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/widgets/onboarding_indicator.dart';
 import 'package:tasks/widgets/skip_button.dart';
 
@@ -47,7 +48,7 @@ class Onboarding3 extends StatelessWidget {
                           textAlign: TextAlign.center,
                           "دع ضيوفك يشاركون فرحتك بإرسال الهدايا المالية مباشرة عبر التطبيق، وكل المبالغ تُجمع في محفظة آمنة مع سجل ذكي يذكّرك بمن أهدى لك سابقاً لتبادل الودّ في مناسبات المستقبل.",
                           style: TextStyle(
-                            color: AppColors.grey,
+                            color: ManagerColors.grey,
                             fontSize: 12,
                             fontFamily: "Almarai",
                           ),
@@ -62,7 +63,7 @@ class Onboarding3 extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
+                          backgroundColor: ManagerColors.primary,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -90,9 +91,9 @@ class Onboarding3 extends StatelessWidget {
                         child: Text(
                           "تسجيل الدخول",
                           style: TextStyle(
-                            color: AppColors.grey,
+                            color: ManagerColors.grey,
                             decoration: TextDecoration.underline,
-                            decorationColor: AppColors.grey,
+                            decorationColor: ManagerColors.grey,
                             fontFamily: "Almarai",
                           ),
                         ),

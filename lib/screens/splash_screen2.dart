@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/constants/app_color.dart';
+import 'package:tasks/core/managers/manager_colors.dart';
 
 class SplashScreen2 extends StatelessWidget {
   const SplashScreen2({super.key});
@@ -7,7 +7,7 @@ class SplashScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: ManagerColors.primary,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 50),
         child: Center(
