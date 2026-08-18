@@ -5,8 +5,8 @@ import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_images.dart';
 import 'package:tasks/core/managers/manager_styles.dart';
-import 'package:tasks/widgets/onboarding_indicator.dart';
-import 'package:tasks/widgets/skip_button.dart';
+import 'package:tasks/features/onboarding/widgets/onboarding_indicator.dart';
+import 'package:tasks/features/onboarding/widgets/skip_button.dart';
 
 class Onboarding3 extends StatelessWidget {
   const Onboarding3({super.key});
@@ -49,7 +49,7 @@ class Onboarding3 extends StatelessWidget {
                         Text(
                           textAlign: TextAlign.center,
                           "دع ضيوفك يشاركون فرحتك بإرسال الهدايا المالية مباشرة عبر التطبيق، وكل المبالغ تُجمع في محفظة آمنة مع سجل ذكي يذكّرك بمن أهدى لك سابقاً لتبادل الودّ في مناسبات المستقبل.",
-                          style: ManagerStyles.regular,
+                          style: ManagerStyles.subTitle,
                         ),
                       ],
                     ),
@@ -75,7 +75,13 @@ class Onboarding3 extends StatelessWidget {
                         ),
 
                         onPressed: () {},
-                        child: Text("التسجيل الآن", style: ManagerStyles.title),
+                        child: Text(
+                          "التسجيل الآن",
+                          style: ManagerStyles.bold.copyWith(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {},

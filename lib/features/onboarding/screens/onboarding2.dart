@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tasks/core/managers/manager_images.dart';
 import 'package:tasks/core/managers/manager_styles.dart';
-import 'package:tasks/widgets/arrow_button.dart';
-import 'package:tasks/widgets/onboarding_indicator.dart';
-import 'package:tasks/widgets/skip_button.dart';
+import 'package:tasks/features/onboarding/widgets/arrow_button.dart';
+import 'package:tasks/features/onboarding/widgets/onboarding_indicator.dart';
+import 'package:tasks/features/onboarding/widgets/skip_button.dart';
 
 class Onboarding2 extends StatelessWidget {
   final PageController controller;
@@ -48,7 +48,7 @@ class Onboarding2 extends StatelessWidget {
                         Text(
                           textAlign: TextAlign.center,
                           "اعرف من أكّد الحضور أو اعتذر فوراً، وراقب الإحصائيات لحظة بلحظة لتكون على اطلاع دائم بعدد الحاضرين، وتدير مناسبتك بدون فوضى أو تكرار.",
-                          style: ManagerStyles.regular,
+                          style: ManagerStyles.subTitle,
                         ),
                       ],
                     ),

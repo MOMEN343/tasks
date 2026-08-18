@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/screens/onboarding1.dart';
-import 'package:tasks/screens/onboarding2.dart';
-import 'package:tasks/screens/onboarding3.dart';
+import 'package:tasks/features/onboarding/screens/onboarding1.dart';
+import 'package:tasks/features/onboarding/screens/onboarding2.dart';
+import 'package:tasks/features/onboarding/screens/onboarding3.dart';
 
 class Onboardingscreen extends StatefulWidget {
   const Onboardingscreen({super.key});
