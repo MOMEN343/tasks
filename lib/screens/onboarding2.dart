@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tasks/core/managers/manager_colors.dart';
-import 'package:tasks/screens/onboarding1.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:tasks/core/managers/manager_images.dart';
+import 'package:tasks/core/managers/manager_styles.dart';
 import 'package:tasks/widgets/arrow_button.dart';
 import 'package:tasks/widgets/onboarding_indicator.dart';
 import 'package:tasks/widgets/skip_button.dart';
 
 class Onboarding2 extends StatelessWidget {
-  const Onboarding2({super.key});
+  final PageController controller;
+  const Onboarding2({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,10 @@ class Onboarding2 extends StatelessWidget {
                   spacing: 20,
                   children: [
                     Center(
-                      child: Image(
-                        image: AssetImage("assets/images/Onboarding2.png"),
+                      child: SvgPicture.asset(
+                        ManagerImages.onboarding2,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.4,
                       ),
                     ),
 
@@ -39,20 +43,12 @@ class Onboarding2 extends StatelessWidget {
                       children: [
                         Text(
                           "تابع المدعوين وتفاعلهم بكل سهولة",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            fontFamily: "Almarai",
-                          ),
+                          style: ManagerStyles.bold,
                         ),
                         Text(
                           textAlign: TextAlign.center,
                           "اعرف من أكّد الحضور أو اعتذر فوراً، وراقب الإحصائيات لحظة بلحظة لتكون على اطلاع دائم بعدد الحاضرين، وتدير مناسبتك بدون فوضى أو تكرار.",
-                          style: TextStyle(
-                            color: ManagerColors.grey,
-                            fontSize: 12,
-                            fontFamily: "Almarai",
-                          ),
+                          style: ManagerStyles.regular,
                         ),
                       ],
                     ),
@@ -62,9 +58,25 @@ class Onboarding2 extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ArrowButton(icon: Icons.arrow_back),
+                    ArrowButton(
+                      icon: Icons.arrow_back,
+                      onPressed: () {
+                        controller.nextPage(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                    ),
 
-                    ArrowButton(icon: Icons.arrow_forward),
+                    ArrowButton(
+                      icon: Icons.arrow_forward,
+                      onPressed: () {
+                        controller.previousPage(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],
