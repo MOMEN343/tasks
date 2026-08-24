@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
-import 'package:tasks/core/managers/manager_styles.dart';
+import 'package:tasks/features/authentication/managers/manager_styles.dart';
 
 class LoginButton extends StatelessWidget {
   final String textButton;
-  const LoginButton({super.key, required this.textButton});
+  final VoidCallback onPressed;
+  const LoginButton({
+    super.key,
+    required this.textButton,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: onPressed,
 
       style: ElevatedButton.styleFrom(
         backgroundColor: ManagerColors.primary,
-        textStyle: ManagerStyles.bold,
+        textStyle: ManagerStyles.regularText,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
 
