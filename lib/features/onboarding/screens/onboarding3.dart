@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
-import 'package:tasks/core/managers/manager_images.dart';
-import 'package:tasks/core/managers/manager_styles.dart';
+import 'package:tasks/features/onboarding/managers/manager_font_size.dart';
+import 'package:tasks/features/onboarding/managers/manager_images.dart';
+import 'package:tasks/features/onboarding/managers/manager_styles.dart';
+
 import 'package:tasks/features/onboarding/widgets/onboarding_indicator.dart';
 import 'package:tasks/features/onboarding/widgets/skip_button.dart';
 
@@ -44,7 +46,7 @@ class Onboarding3 extends StatelessWidget {
                       children: [
                         Text(
                           "استقبل الإهداءات الرقمية بكل راحة وأمان",
-                          style: ManagerStyles.bold,
+                          style: ManagerStyles.title,
                         ),
                         Text(
                           textAlign: TextAlign.center,
@@ -77,8 +79,8 @@ class Onboarding3 extends StatelessWidget {
                         onPressed: () {},
                         child: Text(
                           "التسجيل الآن",
-                          style: ManagerStyles.bold.copyWith(
-                            fontSize: 16,
+                          style: ManagerStyles.title.copyWith(
+                            fontSize: ManagerFontSize.large,
                             color: Colors.white,
                           ),
                         ),

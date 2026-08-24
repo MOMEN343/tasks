@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
-import 'package:tasks/core/managers/manager_images.dart';
+import 'package:tasks/features/onboarding/managers/manager_images.dart';
 
 class SplashScreen2 extends StatelessWidget {
   const SplashScreen2({super.key});

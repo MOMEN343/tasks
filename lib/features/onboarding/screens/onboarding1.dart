@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tasks/core/managers/manager_images.dart';
-import 'package:tasks/core/managers/manager_styles.dart';
+import 'package:tasks/features/onboarding/managers/manager_images.dart';
+import 'package:tasks/features/onboarding/managers/manager_styles.dart';
 import 'package:tasks/features/onboarding/widgets/arrow_button.dart';
 import 'package:tasks/features/onboarding/widgets/onboarding_indicator.dart';
 import 'package:tasks/features/onboarding/widgets/skip_button.dart';
@@ -43,7 +43,7 @@ class Onboarding1 extends StatelessWidget {
                       children: [
                         Text(
                           "نظم مناسباتك بسهولة وذكاء",
-                          style: ManagerStyles.bold,
+                          style: ManagerStyles.title,
                         ),
                         Text(
                           textAlign: TextAlign.center,
