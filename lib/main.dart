@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
+import 'package:tasks/features/home/screens/home_screen.dart';
 import 'package:tasks/features/onboarding/screens/onboarding2.dart';
 import 'package:tasks/features/onboarding/screens/onboarding3.dart';
 import 'package:tasks/features/onboarding/screens/onboardingScreen.dart';
@@ -16,6 +18,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: LoginScreen());
+    return MaterialApp(
+      theme: ThemeData(fontFamily: ManagerFontFamily.almarai),
+      home: HomeScreen(),
+    );
   }
 }
