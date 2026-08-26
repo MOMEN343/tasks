@@ -37,9 +37,7 @@ class _HomeScreen extends State<HomeScreen>
         onPressed: () {},
         backgroundColor: ManagerColors.secondary,
 
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(50),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
 
         child: Icon(Icons.add, color: Colors.white, size: 35),
       ),
