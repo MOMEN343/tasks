@@ -13,4 +13,19 @@ class ManagerTextStyles {
     color: ManagerColors.grey,
     fontSize: ManagerFontSize.smaller,
   );
+
+  static const TextStyle title = TextStyle(
+    fontSize: ManagerFontSize.larg,
+    fontWeight: FontWeight.w400,
+  );
+
+  static const TextStyle label = TextStyle(
+    fontSize: ManagerFontSize.small,
+    fontWeight: FontWeight.w400,
+  );
+  static const TextStyle hintText = TextStyle(
+    color: ManagerColors.grey,
+    fontSize: ManagerFontSize.small,
+    fontWeight: FontWeight.w300,
+  );
 }
