@@ -6,6 +6,7 @@ import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
+import 'package:tasks/features/home/screens/add_event.dart';
 import 'package:tasks/features/home/widgets/current_events.dart';
 import 'package:tasks/features/home/widgets/event_card.dart';
 import 'package:tasks/features/home/widgets/icon_container.dart';
@@ -34,7 +35,11 @@ class _HomeScreen extends State<HomeScreen>
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (context) => AddEvent()));
+        },
         backgroundColor: ManagerColors.secondary,
 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
