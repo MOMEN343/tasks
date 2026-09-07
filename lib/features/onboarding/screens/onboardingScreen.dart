@@ -26,7 +26,7 @@ class _Onboardingscreen extends State<Onboardingscreen> {
           } else if (index == 1) {
             return Onboarding2(controller: _pageController);
           } else {
-            return Onboarding3();
+            return Onboarding3(controller: _pageController);
           }
         },
       ),

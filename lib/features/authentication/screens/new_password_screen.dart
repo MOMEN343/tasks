@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'package:tasks/core/managers/manager_strings.dart';
+
 import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/password_changed_successfully.dart';
@@ -14,11 +17,8 @@ class NewPasswordScreen extends StatefulWidget {
 }
 
 class _NewPasswordScreen extends State<NewPasswordScreen> {
-  String phoneNumber = '';
-  bool obscurePassword = true;
-  String newPass = "";
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,6 +35,7 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                   child: SvgPicture.asset("assets/images/back.svg"),
                 ),
               ),
+
               Padding(
                 padding: EdgeInsetsGeometry.symmetric(horizontal: 24),
                 child: Padding(
@@ -53,13 +54,14 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "ادخل كلمة المرور الجديدة!",
+                                  ManagerStrings.enterNewPassword,
                                   textAlign: TextAlign.right,
                                   textDirection: TextDirection.rtl,
                                   style: ManagerStyles.title,
                                 ),
+
                                 Text(
-                                  "استكمل البيانات النهائية التالية للدخول إلى تطبيق مناسبة",
+                                  ManagerStrings.completeFinalData,
                                   textAlign: TextAlign.right,
                                   textDirection: TextDirection.rtl,
                                   style: ManagerStyles.subTitle,
@@ -80,13 +82,15 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "كلمة المرور",
+                                            ManagerStrings.password,
                                             style: ManagerStyles.subTitle,
                                           ),
+
                                           PasswordField(
                                             validator: (value) {
                                               if (value!.length < 6) {
-                                                return "يجب أن تكون 6 أحرف أو أكثر";
+                                                return ManagerStrings
+                                                    .passwordTooShort;
                                               }
                                             },
                                           ),
@@ -99,8 +103,10 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                                                 color: Colors.black,
                                                 size: 20,
                                               ),
+
                                               Text(
-                                                "يجب أن تكون كلمة المرور مكونة من 6 أحرف أو أكثر",
+                                                ManagerStrings
+                                                    .passwordRequirement,
                                                 style: ManagerStyles.subTitle
                                                     .copyWith(
                                                       fontSize:
@@ -118,9 +124,10 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "تأكيد كلمة المرور الجديدة",
+                                            ManagerStrings.confirmNewPassword,
                                             style: ManagerStyles.subTitle,
                                           ),
+
                                           PasswordField(validator: (value) {}),
                                         ],
                                       ),
@@ -133,7 +140,7 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                         ),
 
                         LoginButton(
-                          textButton: "حفظ التحديث",
+                          textButton: ManagerStrings.saveUpdate,
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               Navigator.of(context).pushReplacement(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
-import 'package:tasks/features/authentication/managers/manager_styles.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
 
+import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
 import 'package:tasks/features/authentication/screens/new_account_verification.dart';
 import 'package:tasks/features/authentication/widgets/login_button.dart';
@@ -21,7 +23,7 @@ class NewAccount extends StatefulWidget {
 
 class _NewAccount extends State<NewAccount> {
   String phoneNumber = '';
-  bool obscurePassword = true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,6 +40,7 @@ class _NewAccount extends State<NewAccount> {
                   child: SvgPicture.asset("assets/images/back.svg"),
                 ),
               ),
+
               Padding(
                 padding: EdgeInsetsGeometry.symmetric(horizontal: 24),
                 child: Padding(
@@ -52,19 +55,21 @@ class _NewAccount extends State<NewAccount> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "أنشئ حسابك",
+                              ManagerStrings.createYourAccount,
                               textAlign: TextAlign.right,
                               textDirection: TextDirection.rtl,
                               style: ManagerStyles.bigTitle,
                             ),
+
                             Text(
-                              "ادخل البيانات التالية لإنشاء حساب جديد,ابدء الان انه مجاني",
+                              ManagerStrings.enterYourDataToCreateAccount,
                               textAlign: TextAlign.right,
                               textDirection: TextDirection.rtl,
                               style: ManagerStyles.subTitle.copyWith(
                                 fontSize: ManagerFontSize.small,
                               ),
                             ),
+
                             Form(
                               child: Column(
                                 spacing: 24,
@@ -76,23 +81,23 @@ class _NewAccount extends State<NewAccount> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "الاسم الكامل",
+                                        ManagerStrings.fullName,
                                         style: ManagerStyles.subTitle,
                                       ),
+
                                       TextFormField(
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(
                                             vertical: 15,
                                             horizontal: 15,
                                           ),
-                                          hintText: 'الاسم الكامل ',
+                                          hintText: ManagerStrings.fullNameHint,
                                           hintStyle: TextStyle(
                                             fontFamily:
                                                 ManagerFontFamily.almarai,
                                             color: Color(0XFFACB5BB),
                                             fontSize: 16,
                                           ),
-
                                           enabledBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
                                               color: Color(0xFFEDF1F3),
@@ -129,7 +134,7 @@ class _NewAccount extends State<NewAccount> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "تعيين كلمة المرور",
+                                        ManagerStrings.setPassword,
                                         style: ManagerStyles.subTitle,
                                       ),
                                       PasswordField(validator: (value) {}),
@@ -142,7 +147,7 @@ class _NewAccount extends State<NewAccount> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "تأكيد كلمة المرور",
+                                        ManagerStrings.confirmPassword,
                                         style: ManagerStyles.subTitle,
                                       ),
                                       PasswordField(validator: (value) {}),
@@ -150,7 +155,7 @@ class _NewAccount extends State<NewAccount> {
                                   ),
 
                                   LoginButton(
-                                    textButton: "إنشاء حساب جديد",
+                                    textButton: ManagerStrings.createNewAccount,
                                     onPressed: () {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
@@ -171,7 +176,8 @@ class _NewAccount extends State<NewAccount> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("لدي حساب بالفعل؟"),
+                            Text(ManagerStrings.alreadyHaveAccount),
+
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(
@@ -181,7 +187,7 @@ class _NewAccount extends State<NewAccount> {
                                 );
                               },
                               child: Text(
-                                "تسجيل الدخول",
+                                ManagerStrings.login,
                                 style: ManagerStyles.subTitle.copyWith(
                                   color: ManagerColors.secondary,
                                 ),

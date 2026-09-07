@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:tasks/core/managers/manager_colors.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
+
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
 import 'package:tasks/features/authentication/widgets/login_button.dart';
@@ -21,6 +24,7 @@ class PasswordChangedSuccessfully extends StatelessWidget {
               child: SvgPicture.asset("assets/images/back.svg"),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Center(
@@ -39,24 +43,25 @@ class PasswordChangedSuccessfully extends StatelessWidget {
                         ),
 
                         Text(
-                          "تم تغيير كلمة المرور بنجاح!",
+                          ManagerStrings.passwordChangedSuccessfully,
                           style: ManagerStyles.regularText.copyWith(
                             color: ManagerColors.primary,
                           ),
                         ),
+
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text:
-                                    "تم تغيير كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول  ومتابعة استخدام",
+                                text: ManagerStrings.passwordChangedDescription,
                                 style: ManagerStyles.subTitle.copyWith(
                                   height: 1.5,
                                 ),
                               ),
+
                               TextSpan(
-                                text: " مناسبة بكل سلاسة ",
+                                text: ManagerStrings.smoothly,
                                 style: ManagerStyles.subTitle.copyWith(
                                   color: ManagerColors.secondary,
                                 ),
@@ -70,7 +75,7 @@ class PasswordChangedSuccessfully extends StatelessWidget {
                     Column(
                       children: [
                         LoginButton(
-                          textButton: "تسجيل الدخول",
+                          textButton: ManagerStrings.login,
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
@@ -83,7 +88,7 @@ class PasswordChangedSuccessfully extends StatelessWidget {
                         TextButton(
                           onPressed: () {},
                           child: Text(
-                            "تصفح سياسات الإستخدام والخصوصية ",
+                            ManagerStrings.usageAndPrivacyPolicies,
                             style: ManagerStyles.subTitle.copyWith(
                               decoration: TextDecoration.underline,
                               fontSize: 10,

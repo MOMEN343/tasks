@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:tasks/core/managers/manager_colors.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
 import 'package:tasks/features/authentication/widgets/login_button.dart';
@@ -21,6 +23,7 @@ class AccountCreatedSuccessfully extends StatelessWidget {
               child: SvgPicture.asset("assets/images/back.svg"),
             ),
           ),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Center(
@@ -39,24 +42,24 @@ class AccountCreatedSuccessfully extends StatelessWidget {
                         ),
 
                         Text(
-                          "تم إنشاء حسابك بنجاح!",
+                          ManagerStrings.accountCreatedSuccessfully,
                           style: ManagerStyles.regularText.copyWith(
                             color: ManagerColors.primary,
                           ),
                         ),
+
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "أهلاً بك في مناسبة!",
+                                text: ManagerStrings.welcomeToMunasaba,
                                 style: ManagerStyles.subTitle.copyWith(
                                   color: ManagerColors.secondary,
                                 ),
                               ),
                               TextSpan(
-                                text:
-                                    " يمكنك الآن البدء في استكشاف تجربة الطبخ المنزلي وطلب أشهى الأطباق بكل سهولة.",
+                                text: ManagerStrings.accountCreatedDescription,
                                 style: ManagerStyles.subTitle.copyWith(
                                   height: 1.5,
                                 ),
@@ -70,7 +73,7 @@ class AccountCreatedSuccessfully extends StatelessWidget {
                     Column(
                       children: [
                         LoginButton(
-                          textButton: "تسجيل الدخول",
+                          textButton: ManagerStrings.login,
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
@@ -83,7 +86,7 @@ class AccountCreatedSuccessfully extends StatelessWidget {
                         TextButton(
                           onPressed: () {},
                           child: Text(
-                            "تصفح سياسات الإستخدام والخصوصية ",
+                            ManagerStrings.usageAndPrivacyPolicies,
                             style: ManagerStyles.subTitle.copyWith(
                               decoration: TextDecoration.underline,
                               fontSize: 10,
