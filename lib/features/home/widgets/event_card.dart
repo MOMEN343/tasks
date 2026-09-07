@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
 
@@ -59,7 +60,7 @@ class EventCard extends StatelessWidget {
                             color: Colors.white,
                             size: 16,
                           ),
-                          Text(" تاريخ المناسبة، "),
+                          Text(ManagerStrings.eventDate),
                           Text("$eventDate"),
                         ],
                       ),
@@ -80,7 +81,7 @@ class EventCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
-                      "مناسبة منتهية",
+                      ManagerStrings.endedEvent,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: ManagerFontSize.smaller,
@@ -99,7 +100,10 @@ class EventCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("حفل زواج $name", style: ManagerTextStyles.cardTitle),
+                    Text(
+                      ManagerStrings.weddingParty(name),
+                      style: ManagerTextStyles.cardTitle,
+                    ),
                     Row(
                       children: [
                         Icon(
@@ -109,7 +113,7 @@ class EventCard extends StatelessWidget {
                         ),
 
                         Text(
-                          "قاعة الفخامة .الرياض . السعودية",
+                          ManagerStrings.eventLocation,
                           style: ManagerTextStyles.subCardTitle,
                         ),
                       ],
@@ -131,12 +135,12 @@ class EventCard extends StatelessWidget {
                               children: [
                                 Icon(Icons.people_alt_outlined, size: 24),
                                 Text(
-                                  "180",
+                                  ManagerStrings.attendanceCount,
                                   style: TextStyle(
                                     fontSize: ManagerFontSize.larg,
                                   ),
                                 ),
-                                Text("حضور"),
+                                Text(ManagerStrings.attendance),
                               ],
                             ),
                           ),
@@ -150,7 +154,7 @@ class EventCard extends StatelessWidget {
                                   size: 24,
                                 ),
                                 Text(
-                                  "45K",
+                                  ManagerStrings.budget,
                                   style: TextStyle(
                                     fontSize: ManagerFontSize.larg,
                                   ),
@@ -172,12 +176,12 @@ class EventCard extends StatelessWidget {
                               children: [
                                 Icon(Icons.calendar_today_rounded, size: 24),
                                 Text(
-                                  "250",
+                                  ManagerStrings.invitedCount,
                                   style: TextStyle(
                                     fontSize: ManagerFontSize.larg,
                                   ),
                                 ),
-                                Text("مدعو"),
+                                Text(ManagerStrings.invited),
                               ],
                             ),
                           ),
@@ -197,7 +201,7 @@ class EventCard extends StatelessWidget {
                     borderRadius: BorderRadiusGeometry.circular(10),
                   ),
                   child: Text(
-                    "عرض التفاصيل",
+                    ManagerStrings.showDetails,
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                 ),

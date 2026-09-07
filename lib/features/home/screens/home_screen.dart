@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
@@ -101,7 +102,7 @@ class _HomeScreen extends State<HomeScreen>
                                           Text(
                                             softWrap: true,
                                             maxLines: 2,
-                                            "أهلاً وسهلاً بعودتك",
+                                            ManagerStrings.welcomeBack,
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontFamily:
@@ -111,7 +112,7 @@ class _HomeScreen extends State<HomeScreen>
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            "محمــد علــي إسماعيــل",
+                                            ManagerStrings.userName,
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontFamily:
@@ -150,7 +151,7 @@ class _HomeScreen extends State<HomeScreen>
                           ),
 
                           SearchBar(
-                            hintText: "البحث هنا ..",
+                            hintText: ManagerStrings.searchHere,
                             hintStyle: WidgetStatePropertyAll(
                               TextStyle(
                                 color: Colors.white,
@@ -225,8 +226,8 @@ class _HomeScreen extends State<HomeScreen>
                     ),
 
                     tabs: [
-                      Tab(text: "المناسبات الحالية"),
-                      Tab(text: "مناسبات سابقة"),
+                      Tab(text: ManagerStrings.currentEvents),
+                      Tab(text: ManagerStrings.previousEvents),
                     ],
                   ),
                 ),
