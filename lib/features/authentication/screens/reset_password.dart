@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'package:tasks/core/managers/manager_strings.dart';
+
 import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/verification_screen.dart';
@@ -15,6 +18,7 @@ class ResetPassword extends StatefulWidget {
 
 class _ResetPassword extends State<ResetPassword> {
   String phoneNumber = "";
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,6 +34,7 @@ class _ResetPassword extends State<ResetPassword> {
                 child: SvgPicture.asset("assets/images/back.svg"),
               ),
             ),
+
             Scaffold(
               backgroundColor: Colors.transparent,
               appBar: AppBar(
@@ -41,6 +46,7 @@ class _ResetPassword extends State<ResetPassword> {
                   },
                 ),
               ),
+
               body: Directionality(
                 textDirection: TextDirection.rtl,
                 child: Padding(
@@ -57,11 +63,12 @@ class _ResetPassword extends State<ResetPassword> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "إعادة تعيين كلمة المرور",
+                                ManagerStrings.resetPassword,
                                 style: ManagerStyles.title,
                               ),
+
                               Text(
-                                "يرجى إدخال رقم هاتفك المرتبط بحسابك. سنرسل لك تعليمات حول كيفية إنشاء كلمة مرور جديدة عبر رسالة نصية",
+                                ManagerStrings.resetPasswordDescription,
                                 style: ManagerStyles.subTitle.copyWith(
                                   fontSize: ManagerFontSize.medium,
                                   height: 1.6,
@@ -78,8 +85,9 @@ class _ResetPassword extends State<ResetPassword> {
                                   phoneNumber = phone;
                                 },
                               ),
+
                               LoginButton(
-                                textButton: "إعادة الضبط",
+                                textButton: ManagerStrings.reset,
                                 onPressed: () {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(

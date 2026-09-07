@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pinput/pinput.dart';
+
 import 'package:tasks/core/managers/manager_colors.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
+
 import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/new_password_screen.dart';
@@ -9,10 +12,11 @@ import 'package:tasks/features/authentication/widgets/login_button.dart';
 
 class VerificationScreen extends StatefulWidget {
   final String phoneNumber;
+
   const VerificationScreen({super.key, required this.phoneNumber});
 
   @override
-  State<StatefulWidget> createState() => _VerificationScreen();
+  State<VerificationScreen> createState() => _VerificationScreen();
 }
 
 class _VerificationScreen extends State<VerificationScreen> {
@@ -34,6 +38,7 @@ class _VerificationScreen extends State<VerificationScreen> {
                     child: SvgPicture.asset("assets/images/back.svg"),
                   ),
                 ),
+
                 Padding(
                   padding: EdgeInsetsGeometry.symmetric(horizontal: 24),
                   child: Padding(
@@ -47,11 +52,14 @@ class _VerificationScreen extends State<VerificationScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "أدخل رمز التحقق",
+                                ManagerStrings.enterVerificationCode,
                                 style: ManagerStyles.title,
                               ),
+
                               Text(
-                                "لقد أرسلنا رمز التحقق إلى ${maskPhoneNumber(widget.phoneNumber)} هل تريد تغييره؟",
+                                ManagerStrings.verificationMessage(
+                                  maskPhoneNumber(widget.phoneNumber),
+                                ),
                                 style: ManagerStyles.subTitle.copyWith(
                                   fontSize: ManagerFontSize.medium,
                                   height: 1.6,
@@ -68,7 +76,7 @@ class _VerificationScreen extends State<VerificationScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "رمز التحقق",
+                                          ManagerStrings.verificationCode,
                                           style: ManagerStyles.title.copyWith(
                                             fontSize: ManagerFontSize.medium,
                                           ),
@@ -77,7 +85,7 @@ class _VerificationScreen extends State<VerificationScreen> {
                                         TextButton(
                                           onPressed: () {},
                                           child: Text(
-                                            "إعادة إرسال الرمز",
+                                            ManagerStrings.resendCode,
                                             style: ManagerStyles.subTitle
                                                 .copyWith(
                                                   fontSize:
@@ -104,14 +112,11 @@ class _VerificationScreen extends State<VerificationScreen> {
                                           ),
                                         ),
                                       ),
-
                                       defaultPinTheme: PinTheme(
                                         width: 49,
                                         height: 56,
                                         decoration: BoxDecoration(
-                                          color:
-                                              Colors.transparent, // لون الخلفية
-
+                                          color: Colors.transparent,
                                           border: Border.all(
                                             color: ManagerColors.lightGrey,
                                             width: 1,
@@ -128,7 +133,7 @@ class _VerificationScreen extends State<VerificationScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "إرسال رمز إعادة الضبط في",
+                                          ManagerStrings.resetCodeSentIn,
                                           style: ManagerStyles.subTitle,
                                         ),
 
@@ -145,7 +150,7 @@ class _VerificationScreen extends State<VerificationScreen> {
                               Padding(
                                 padding: EdgeInsetsGeometry.only(top: 74),
                                 child: LoginButton(
-                                  textButton: "التالي",
+                                  textButton: ManagerStrings.next,
                                   onPressed: () {
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
@@ -173,8 +178,9 @@ class _VerificationScreen extends State<VerificationScreen> {
 }
 
 String maskPhoneNumber(String phoneNumber) {
-  if (phoneNumber.length < 8) {
+  if (phoneNumber.length < 11) {
     return phoneNumber;
   }
+
   return '${phoneNumber.substring(0, 4)}****${phoneNumber.substring(10)}';
 }

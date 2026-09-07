@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/onboarding/managers/manager_images.dart';
 import 'package:tasks/features/onboarding/managers/manager_styles.dart';
 import 'package:tasks/features/onboarding/widgets/arrow_button.dart';
@@ -8,21 +10,22 @@ import 'package:tasks/features/onboarding/widgets/skip_button.dart';
 
 class Onboarding1 extends StatelessWidget {
   final PageController controller;
+
   const Onboarding1({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SkipButton(),
+                SkipButton(controller: controller),
 
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,16 +41,17 @@ class Onboarding1 extends StatelessWidget {
                     ),
 
                     OnboardingIndicator(align: AlignmentGeometry.bottomRight),
+
                     Column(
                       spacing: 5,
                       children: [
                         Text(
-                          "نظم مناسباتك بسهولة وذكاء",
+                          ManagerStrings.onboardingTitle1,
                           style: ManagerStyles.title,
                         ),
                         Text(
+                          ManagerStrings.onboardingDescription1,
                           textAlign: TextAlign.center,
-                          "ارفع صورة دعوتك الجاهزة، أضف تفاصيل المناسبة مثل الاسم والمكان والموعد، ودع التطبيق يتولى إرسالها لجميع المدعوين بطريقة أنيقة ومنظمة.",
                           style: ManagerStyles.subTitle,
                         ),
                       ],
@@ -59,7 +63,7 @@ class Onboarding1 extends StatelessWidget {
                   icon: Icons.arrow_back,
                   onPressed: () {
                     controller.nextPage(
-                      duration: Duration(milliseconds: 300),
+                      duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                     );
                   },
