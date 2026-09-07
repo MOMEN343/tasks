@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/home/widgets/event_card.dart';
 
 class CurrentEvents extends StatelessWidget {
+  const CurrentEvents({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -11,15 +14,25 @@ class CurrentEvents extends StatelessWidget {
         children: [
           EventCard(
             image: "card1.png",
-            name: "أحمد وفاطمة",
-            eventDate: "01-12-2025",
+
+            name: ManagerStrings.ahmedAndFatima,
+
+            eventDate: ManagerStrings.firstEventDate,
           ),
+
           EventCard(
             image: "card2.png",
-            name: "عبدالله وفتحية",
-            eventDate: "03-12-2025",
+
+            name: ManagerStrings.abdullahAndFathia,
+
+            eventDate: ManagerStrings.secondEventDate,
           ),
-          EventCard(image: "card1.png", name: "أحمد وفاطمة", eventDate: "01-12-2025"),
+
+          EventCard(
+            image: "card1.png",
+            name: ManagerStrings.ahmedAndFatima,
+            eventDate: ManagerStrings.firstEventDate,
+          ),
         ],
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
+import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/authentication/widgets/login_button.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
@@ -61,20 +61,19 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
               ),
             ),
           ),
-
           title: Column(
             spacing: 5,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "مناسبة جديدة",
+                ManagerStrings.newEvent,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: ManagerFontSize.larg,
                 ),
               ),
               Text(
-                "أضف تفاصيل مناسبتك الخاصة",
+                ManagerStrings.addYourEventDetails,
                 style: ManagerTextStyles.subCardTitle.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
@@ -90,7 +89,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
               dividerColor: Colors.transparent,
               padding: EdgeInsets.only(bottom: 10),
               labelPadding: EdgeInsets.symmetric(horizontal: 10),
-
               tabs: [
                 Container(
                   height: 4,
@@ -99,7 +97,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-
                 AnimatedBuilder(
                   animation: tabController!,
                   builder: (context, child) {
@@ -122,7 +119,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
             ),
           ),
         ),
-
         body: TabBarView(
           controller: tabController,
           children: [
@@ -166,11 +162,12 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "صورة المناسبة",
+                                            ManagerStrings.eventImage,
                                             style: ManagerTextStyles.title,
                                           ),
                                           Text(
-                                            "أرفق صورة توضح طبيعة النشاط بشكل أفضل",
+                                            ManagerStrings
+                                                .eventImageDescription,
                                             style:
                                                 ManagerTextStyles.subCardTitle,
                                           ),
@@ -178,7 +175,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                       ),
                                     ],
                                   ),
-
                                   DottedBorder(
                                     options: RoundedRectDottedBorderOptions(
                                       color: ManagerColors.grey,
@@ -209,7 +205,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             ),
                                           ),
                                           Text(
-                                            "اضغط لرفع صورة",
+                                            ManagerStrings.uploadImage,
                                             style: ManagerTextStyles
                                                 .subCardTitle
                                                 .copyWith(
@@ -218,7 +214,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                                 ),
                                           ),
                                           Text(
-                                            "PNG, JPEG حتى 10MB",
+                                            ManagerStrings.imageFormats,
                                             style:
                                                 ManagerTextStyles.subCardTitle,
                                           ),
@@ -230,7 +226,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                               ),
                             ),
                           ),
-
                           Card(
                             color: Colors.white,
                             elevation: 1,
@@ -261,10 +256,9 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              "طباعة المدعويين",
+                                              ManagerStrings.guestPrinting,
                                               style: ManagerTextStyles.title,
                                             ),
-
                                             Container(
                                               width: 63,
                                               height: 18,
@@ -280,7 +274,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                                   Container(
                                                     width: 14,
                                                     height: 14,
-
                                                     decoration: BoxDecoration(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -288,7 +281,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                                           ),
                                                       color: Colors.white,
                                                     ),
-
                                                     child: Icon(
                                                       Icons.check,
                                                       size: 10,
@@ -296,9 +288,9 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                                           .secondary,
                                                     ),
                                                   ),
-
                                                   Text(
-                                                    "تفعيل الميزة",
+                                                    ManagerStrings
+                                                        .enableFeature,
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 7,
@@ -312,22 +304,23 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                         Column(
                                           children: [
                                             Text(
-                                              "فعّل اشتراك طباعة المدعوين، واحصل بعد الفرح على نسخة.",
+                                              ManagerStrings
+                                                  .guestPrintingDescription,
                                               style: ManagerTextStyles
                                                   .subCardTitle,
                                             ),
-
                                             RichText(
                                               text: TextSpan(
                                                 style: ManagerTextStyles
                                                     .subCardTitle,
                                                 children: [
                                                   TextSpan(
-                                                    text:
-                                                        "مطبوعة من قائمة المدعويين مع جميع تفاصيلهم مقابل",
+                                                    text: ManagerStrings
+                                                        .printedGuestList,
                                                   ),
                                                   TextSpan(
-                                                    text: "200 ريال",
+                                                    text: ManagerStrings
+                                                        .twoHundredRiyals,
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w900,
@@ -347,7 +340,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                               ),
                             ),
                           ),
-
                           Card(
                             color: Colors.white,
                             elevation: 1,
@@ -364,11 +356,12 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "عدد المدعوين",
+                                            ManagerStrings.guestCount,
                                             style: ManagerTextStyles.title,
                                           ),
                                           Text(
-                                            "يمكنك تعديل عدد المدعوين لاحقًا من لوحة المناسبة",
+                                            ManagerStrings
+                                                .guestCountDescription,
                                             style:
                                                 ManagerTextStyles.subCardTitle,
                                           ),
@@ -398,7 +391,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                       ),
                                     ],
                                   ),
-
                                   Row(
                                     spacing: 10,
                                     children: [
@@ -480,7 +472,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                               borderRadius:
                                                   BorderRadius.circular(15),
                                             ),
-
                                             child: Icon(
                                               Icons.add,
                                               color: Colors.white,
@@ -490,7 +481,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                       ),
                                     ],
                                   ),
-
                                   Row(
                                     spacing: 10,
                                     mainAxisAlignment:
@@ -506,7 +496,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                           child: CountContainer(count: 50),
                                         ),
                                       ),
-
                                       Expanded(
                                         child: InkWell(
                                           onTap: () {
@@ -517,7 +506,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                           child: CountContainer(count: 100),
                                         ),
                                       ),
-
                                       Expanded(
                                         child: InkWell(
                                           onTap: () {
@@ -528,7 +516,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                           child: CountContainer(count: 200),
                                         ),
                                       ),
-
                                       Expanded(
                                         child: InkWell(
                                           onTap: () {
@@ -549,9 +536,8 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   ),
-
                   LoginButton(
-                    textButton: "التالي",
+                    textButton: ManagerStrings.next,
                     onPressed: () {
                       tabController!.animateTo(1);
                       // setState(() {
@@ -562,7 +548,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                 ],
               ),
             ),
-
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 28),
               child: Column(
@@ -578,16 +563,15 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "تفاصيل المناسبة",
+                                ManagerStrings.eventDetails,
                                 style: ManagerTextStyles.title,
                               ),
                               Text(
-                                "قم بإضافة اسم المناسبة وتاريخها وموقع إقامتها",
+                                ManagerStrings.eventDetailsDescription,
                                 style: ManagerTextStyles.subCardTitle,
                               ),
                             ],
                           ),
-
                           Form(
                             key: formkey,
                             child: Column(
@@ -599,17 +583,16 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "إسم المناسبة",
+                                      ManagerStrings.eventName,
                                       style: ManagerTextStyles.label,
                                     ),
                                     TextFormFeildStyle(
                                       validator: (v) {},
-                                      hintText: "مثال : حفل زواج أحمد وفاطمة",
+                                      hintText: ManagerStrings.eventNameHint,
                                       width: double.infinity,
                                     ),
                                   ],
                                 ),
-
                                 Row(
                                   spacing: 10,
                                   children: [
@@ -620,11 +603,11 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "التاريخ",
+                                            ManagerStrings.date,
                                             style: ManagerTextStyles.label,
                                           ),
                                           TextFormFeildStyle(
-                                            hintText: "mm/dd/yyyy",
+                                            hintText: ManagerStrings.dateHint,
                                             validator: (v) {},
                                             width:
                                                 (MediaQuery.of(
@@ -643,7 +626,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                         ],
                                       ),
                                     ),
-
                                     Expanded(
                                       child: Column(
                                         spacing: 5,
@@ -651,12 +633,13 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "وقت بدء المناسبة",
+                                            ManagerStrings.eventStartTime,
                                             style: ManagerTextStyles.label,
                                           ),
                                           TextFormFeildStyle(
                                             validator: (v) {},
-                                            hintText: "--:-- --",
+                                            hintText: ManagerStrings
+                                                .eventStartTimeHint,
                                             width:
                                                 (MediaQuery.of(
                                                   context,
@@ -676,19 +659,18 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                     ),
                                   ],
                                 ),
-
                                 Column(
                                   spacing: 5,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "الموقع وتفاصيله",
+                                      ManagerStrings.locationAndDetails,
                                       style: ManagerTextStyles.label,
                                     ),
                                     TextFormFeildStyle(
                                       validator: (v) {},
                                       hintText:
-                                          "يرجى كتابة تفاصيل موقع المناسبة وتحديد مكان انعقادها بشكل واضح.",
+                                          ManagerStrings.locationAndDetailsHint,
                                       hight: 109,
                                       width: double.infinity,
                                       maxLines: 5,
@@ -702,8 +684,10 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                       ),
                     ),
                   ),
-
-                  LoginButton(textButton: "تأكيد الإضافة", onPressed: () {}),
+                  LoginButton(
+                    textButton: ManagerStrings.confirmAddition,
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ),
