@@ -4,18 +4,21 @@ class ManagerStrings {
   static const String skip = 'تخطي';
 
   // Onboarding 1
+
   static const String onboardingTitle1 = 'نظم مناسباتك بسهولة وذكاء';
 
   static const String onboardingDescription1 =
       'ارفع صورة دعوتك الجاهزة، أضف تفاصيل المناسبة مثل الاسم والمكان والموعد، ودع التطبيق يتولى إرسالها لجميع المدعوين بطريقة أنيقة ومنظمة.';
 
   // Onboarding 2
+
   static const String onboardingTitle2 = 'تابع المدعوين وتفاعلهم بكل سهولة';
 
   static const String onboardingDescription2 =
       'اعرف من أكّد الحضور أو اعتذر فوراً، وراقب الإحصائيات لحظة بلحظة لتكون على اطلاع دائم بعدد الحاضرين، وتدير مناسبتك بدون فوضى أو تكرار.';
 
   // Onboarding 3
+
   static const String onboardingTitle3 =
       'استقبل الإهداءات الرقمية بكل راحة وأمان';
 
@@ -23,6 +26,7 @@ class ManagerStrings {
       'دع ضيوفك يشاركون فرحتك بإرسال الهدايا المالية مباشرة عبر التطبيق، وكل المبالغ تُجمع في محفظة آمنة مع سجل ذكي يذكّرك بمن أهدى لك سابقاً لتبادل الودّ في مناسبات المستقبل.';
 
   static const String registerNow = 'التسجيل الآن';
+
   static const String login = 'تسجيل الدخول';
 
   // ==================== Authentication ====================
@@ -71,6 +75,28 @@ class ManagerStrings {
 
   static const String alreadyHaveAccount = 'لدي حساب بالفعل؟';
 
+  // Validation
+
+  static const String requiredField = 'هذا الحقل مطلوب';
+
+  static const String invalidFullName = 'يرجى إدخال الاسم الكامل';
+
+  static const String nameCannotContainNumbers =
+      'الاسم لا يمكن أن يحتوي على أرقام';
+
+  static const String invalidPhoneNumber = 'يرجى إدخال رقم هاتف صحيح';
+
+  static const String phoneNumberMaxLength =
+      'لا يمكن أن يكون رقم الهاتف أكبر من 10 أرقام';
+
+  static const String passwordTooShort = 'يجب أن تكون 6 أحرف أو أكثر';
+
+  static const String passwordsDoNotMatch = 'كلمتا المرور غير متطابقتين';
+
+  // Phone Field
+
+  static const String phoneNumber = 'رقم الهاتف';
+
   // Verification
 
   static const String enterVerificationCode = 'أدخل رمز التحقق';
@@ -96,8 +122,6 @@ class ManagerStrings {
   static const String passwordRequirement =
       'يجب أن تكون كلمة المرور مكونة من 6 أحرف أو أكثر';
 
-  static const String passwordTooShort = 'يجب أن تكون 6 أحرف أو أكثر';
-
   static const String confirmNewPassword = 'تأكيد كلمة المرور الجديدة';
 
   static const String saveUpdate = 'حفظ التحديث';
@@ -121,13 +145,6 @@ class ManagerStrings {
 
   static const String reset = 'إعادة الضبط';
 
-  //Phone Feild
-  static const String phoneNumber = 'رقم الهاتف';
-
-  static const String requiredField = 'هذا الحقل مطلوب';
-
-  static const String phoneNumberMaxLength =
-      'لا يمكن أن يكون رقم الهاتف أكبر من 10 أرقام';
   // ==================== Home ====================
 
   static const String welcomeBack = 'أهلاً وسهلاً بعودتك';

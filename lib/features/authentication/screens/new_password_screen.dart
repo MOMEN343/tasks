@@ -87,6 +87,8 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                                           ),
 
                                           PasswordField(
+                                            hintText: ManagerStrings.password,
+                                            controller: TextEditingController(),
                                             validator: (value) {
                                               if (value!.length < 6) {
                                                 return ManagerStrings
@@ -128,7 +130,12 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                                             style: ManagerStyles.subTitle,
                                           ),
 
-                                          PasswordField(validator: (value) {}),
+                                          PasswordField(
+                                            hintText:
+                                                ManagerStrings.confirmPassword,
+                                            validator: (value) {},
+                                            controller: TextEditingController(),
+                                          ),
                                         ],
                                       ),
                                     ],
