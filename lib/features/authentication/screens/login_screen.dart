@@ -25,7 +25,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreen extends State<LoginScreen> {
   String phoneNumber = '';
   bool obscurePassword = true;
-
+  GlobalKey<FormState> formkey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -73,11 +73,30 @@ class _LoginScreen extends State<LoginScreen> {
                             ),
 
                             Form(
+                              key: formkey,
                               child: Column(
                                 spacing: 5,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   PhoneField(
+                                    validator: (phone) {
+                                      if (phone == null ||
+                                          phone.number.trim().isEmpty) {
+                                        return ManagerStrings.requiredField;
+                                      }
+
+                                      if (phone.number.length < 9) {
+                                        return ManagerStrings
+                                            .invalidPhoneNumber;
+                                      }
+
+                                      if (phone.number.length > 10) {
+                                        return ManagerStrings
+                                            .phoneNumberMaxLength;
+                                      }
+
+                                      return null;
+                                    },
                                     onChanged: (phone) {
                                       phoneNumber = phone;
                                     },
@@ -88,7 +107,21 @@ class _LoginScreen extends State<LoginScreen> {
                                     style: ManagerStyles.subTitle,
                                   ),
 
-                                  PasswordField(validator: (value) {}),
+                                  PasswordField(
+                                    hintText: ManagerStrings.password,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'هذا الحقل مطلوب';
+                                      }
+
+                                      if (value.length < 6) {
+                                        return 'يجب أن تكون 6 أحرف أو أكثر';
+                                      }
+
+                                      return null;
+                                    },
+                                    controller: TextEditingController(),
+                                  ),
 
                                   TextButton(
                                     child: Text(
@@ -112,11 +145,13 @@ class _LoginScreen extends State<LoginScreen> {
                                   LoginButton(
                                     textButton: ManagerStrings.login,
                                     onPressed: () {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) => HomeScreen(),
-                                        ),
-                                      );
+                                      if (formkey.currentState!.validate()) {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) => HomeScreen(),
+                                          ),
+                                        );
+                                      }
                                     },
                                   ),
                                 ],

@@ -23,7 +23,10 @@ class NewAccount extends StatefulWidget {
 
 class _NewAccount extends State<NewAccount> {
   String phoneNumber = '';
+  GlobalKey<FormState> formKey = GlobalKey();
 
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -71,6 +74,7 @@ class _NewAccount extends State<NewAccount> {
                             ),
 
                             Form(
+                              key: formKey,
                               child: Column(
                                 spacing: 24,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,48 +90,54 @@ class _NewAccount extends State<NewAccount> {
                                       ),
 
                                       TextFormField(
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(
-                                            vertical: 15,
-                                            horizontal: 15,
-                                          ),
-                                          hintText: ManagerStrings.fullNameHint,
-                                          hintStyle: TextStyle(
-                                            fontFamily:
-                                                ManagerFontFamily.almarai,
-                                            color: Color(0XFFACB5BB),
-                                            fontSize: 16,
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFFEDF1F3),
-                                              style: BorderStyle.solid,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'هذا الحقل مطلوب';
+                                          }
+
+                                          if (value.length < 3) {
+                                            return 'يرجى إدخال الاسم الكامل';
+                                          }
+
+                                          if (RegExp(
+                                            r'[0-9]',
+                                          ).hasMatch(value)) {
+                                            return 'الاسم لا يمكن أن يحتوي على أرقام';
+                                          }
+
+                                          return null;
+                                        },
+                                        decoration:
+                                            ManagerStyles.textFormFieldDecoration(
+                                              hintText: ManagerStrings.fullName,
                                             ),
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: ManagerColors.primary,
-                                              style: BorderStyle.solid,
-                                              width: 1,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                          ),
-                                        ),
                                       ),
                                     ],
                                   ),
 
                                   PhoneField(
+                                    validator: (phone) {
+                                      if (phone == null ||
+                                          phone.number.trim().isEmpty) {
+                                        return ManagerStrings.requiredField;
+                                      }
+
+                                      if (phone.number.length < 9) {
+                                        return ManagerStrings
+                                            .invalidPhoneNumber;
+                                      }
+
+                                      if (phone.number.length > 10) {
+                                        return ManagerStrings
+                                            .phoneNumberMaxLength;
+                                      }
+
+                                      return null;
+                                    },
                                     onChanged: (phone) {
                                       phoneNumber = phone;
                                     },
                                   ),
-
                                   Column(
                                     spacing: 5,
                                     crossAxisAlignment:
@@ -137,7 +147,21 @@ class _NewAccount extends State<NewAccount> {
                                         ManagerStrings.setPassword,
                                         style: ManagerStyles.subTitle,
                                       ),
-                                      PasswordField(validator: (value) {}),
+                                      PasswordField(
+                                        hintText: ManagerStrings.password,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'هذا الحقل مطلوب';
+                                          }
+
+                                          if (value.length < 6) {
+                                            return 'يجب أن تكون 6 أحرف أو أكثر';
+                                          }
+
+                                          return null;
+                                        },
+                                        controller: passwordController,
+                                      ),
                                     ],
                                   ),
 
@@ -150,21 +174,39 @@ class _NewAccount extends State<NewAccount> {
                                         ManagerStrings.confirmPassword,
                                         style: ManagerStyles.subTitle,
                                       ),
-                                      PasswordField(validator: (value) {}),
+                                      PasswordField(
+                                        hintText:
+                                            ManagerStrings.confirmPassword,
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'هذا الحقل مطلوب';
+                                          }
+
+                                          if (value !=
+                                              passwordController.text) {
+                                            return 'كلمتا المرور غير متطابقتين';
+                                          }
+
+                                          return null;
+                                        },
+                                        controller: confirmPasswordController,
+                                      ),
                                     ],
                                   ),
 
                                   LoginButton(
                                     textButton: ManagerStrings.createNewAccount,
                                     onPressed: () {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              NewAccountVerification(
-                                                phoneNumber: phoneNumber,
-                                              ),
-                                        ),
-                                      );
+                                      if (formKey.currentState!.validate()) {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                NewAccountVerification(
+                                                  phoneNumber: phoneNumber,
+                                                ),
+                                          ),
+                                        );
+                                      }
                                     },
                                   ),
                                 ],

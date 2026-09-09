@@ -81,6 +81,7 @@ class _ResetPassword extends State<ResetPassword> {
                             spacing: 10,
                             children: [
                               PhoneField(
+                                validator: (value) {},
                                 onChanged: (phone) {
                                   phoneNumber = phone;
                                 },
