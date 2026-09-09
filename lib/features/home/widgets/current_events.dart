@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
+import 'package:tasks/features/home/data/event_data.dart';
+import 'package:tasks/features/home/managers/manager_image.dart';
+import 'package:tasks/features/home/models/event_model.dart';
 import 'package:tasks/features/home/widgets/event_card.dart';
 
 class CurrentEvents extends StatelessWidget {
-  const CurrentEvents({super.key});
+  CurrentEvents({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,25 +16,25 @@ class CurrentEvents extends StatelessWidget {
         spacing: 10,
         children: [
           EventCard(
-            image: "card1.png",
+            image: event1.image,
 
-            name: ManagerStrings.ahmedAndFatima,
+            name: event1.title,
 
-            eventDate: ManagerStrings.firstEventDate,
+            eventDate: event1.data,
           ),
 
           EventCard(
-            image: "card2.png",
-
-            name: ManagerStrings.abdullahAndFathia,
-
-            eventDate: ManagerStrings.secondEventDate,
+            image: event2.image,
+            name: event2.title,
+            eventDate: event2.data,
           ),
 
           EventCard(
-            image: "card1.png",
-            name: ManagerStrings.ahmedAndFatima,
-            eventDate: ManagerStrings.firstEventDate,
+            image: event1.image,
+
+            name: event1.title,
+
+            eventDate: event1.data,
           ),
         ],
       ),

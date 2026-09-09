@@ -5,8 +5,11 @@ import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
+import 'package:tasks/features/home/data/user_data.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
+import 'package:tasks/features/home/managers/manager_image.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
+import 'package:tasks/features/home/models/user_model.dart';
 import 'package:tasks/features/home/screens/add_event.dart';
 import 'package:tasks/features/home/widgets/current_events.dart';
 import 'package:tasks/features/home/widgets/event_card.dart';
@@ -88,7 +91,7 @@ class _HomeScreen extends State<HomeScreen>
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(50),
                                         child: Image.asset(
-                                          "assets/images/user_image.png",
+                                          user.image,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -112,7 +115,7 @@ class _HomeScreen extends State<HomeScreen>
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            ManagerStrings.userName,
+                                            user.name,
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontFamily:

@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
+import 'package:tasks/features/home/data/event_data.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
 
@@ -113,7 +114,7 @@ class EventCard extends StatelessWidget {
                         ),
 
                         Text(
-                          ManagerStrings.eventLocation,
+                          event1.address,
                           style: ManagerTextStyles.subCardTitle,
                         ),
                       ],
