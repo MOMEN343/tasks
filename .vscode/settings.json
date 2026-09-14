@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Users/kraiz/Desktop/Tasks/tasks/linux"
+  "cmake.sourceDirectory": "C:/Users/kraiz/Desktop/Tasks/tasks/linux",
+  "dart.flutterSdkPath": ".fvm/versions/3.41.7"
 }
