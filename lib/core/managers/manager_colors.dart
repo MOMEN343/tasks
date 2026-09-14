@@ -5,5 +5,8 @@ class ManagerColors {
   static const Color secondary = Color(0xFFD1A442);
   static const Color grey = Color(0xFF9F9696);
   static const Color lightGrey = Color(0xFFD9D9D9);
-  static const Color buttonTextColor = Colors.white;
+
+  static const Color blue = Color(0xFF356DF7);
+  static const Color green = Color(0xFF10B981);
+  static const Color red = Color(0xFFFF0000);
 }

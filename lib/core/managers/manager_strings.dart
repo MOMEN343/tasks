@@ -258,4 +258,19 @@ class ManagerStrings {
   static const String previousEventDate = '24-9-2025';
 
   static const String previousEventDateTwo = '19-9-2025';
+
+  // ==================== Wallet ====================
+
+  static const String walletScreenTitle = 'المحفظة المالية';
+  static const String walletScreenSubTitle = 'إدارة أموالك وعمليات السحب';
+  static const String balance = 'الرصيد المتوفر';
+  static const String pendingBalance = "الرصيد المعلق";
+  static const String withdrawableBalance = "الرصيد القابل للسحب";
+
+  static const String giftTransactionTitle = "إهداء من";
+  static const String governmentGiftTransactionTitle =
+      "إهداء مُقدم برعاية الحكومة";
+  static const String transferRequestTransactionTitle = "طلب تحويل من المحفظة";
+  static const String completedTransactionStatus = "تم التنفيذ";
+  static const String inProgressTransactionStatus = "قيد المعالجة";
 }

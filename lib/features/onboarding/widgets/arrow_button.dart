@@ -17,7 +17,7 @@ class ArrowButton extends StatelessWidget {
         padding: EdgeInsets.all(12),
       ),
       onPressed: onPressed,
-      child: Icon(icon, color: ManagerColors.buttonTextColor),
+      child: Icon(icon, color: Colors.white),
     );
   }
 }
