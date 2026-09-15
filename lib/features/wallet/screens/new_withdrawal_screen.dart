@@ -231,7 +231,12 @@ class NewWithdrawalScreen extends StatelessWidget {
                             context: context,
                             barrierColor: Colors.transparent,
                             builder: (context) {
-                              return ConfirmDialog();
+                              return ConfirmDialog(
+                                title:
+                                    ManagerStrings.confirmWithdrawalDialogTitle,
+                                subTitle: ManagerStrings
+                                    .confirmWithdrawalDialogsubTitle,
+                              );
                             },
                           );
                         }

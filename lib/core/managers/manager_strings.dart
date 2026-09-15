@@ -274,6 +274,7 @@ class ManagerStrings {
   static const String completedTransactionStatus = "تم التنفيذ";
   static const String inProgressTransactionStatus = "قيد المعالجة";
 
+  //newWithdrawalScreen
   static const String newWithdrawalScreenTitle = "طلب سحب";
   static const String newWithdrawalScreenSubTitle =
       "أدخل قيمة السحب وتابع العملية.";
@@ -292,10 +293,33 @@ class ManagerStrings {
   static const String changeBankAccount = "تغيير الحساب";
   static const String confirmWithdrawal = "تأكيد السحب";
 
-  static const String confirmWithdrawalDilogTitle = "تأكيد إرسال الطلب";
-  static const String confirmWithdrawalDilogsubTitle =
+  static const String confirmWithdrawalDialogTitle = "تأكيد إرسال الطلب";
+  static const String confirmWithdrawalDialogsubTitle =
       "هل أنت متأكد من إرسال طلب السحب؟ تأكد من صحة جميع البيانات قبل المتابعة.";
 
   static const String confirm = "تأكيد ";
   static const String willtransferIn = "سيتم التحويل خلال 1- 3 أيام عمل";
+
+  //Add Bank Account Screen
+  static const String addBankAccountScreenTitle = "إضافة الحساب البنكي";
+  static const String addBankAccountScreenSubTitle =
+      "قم بإضافة حسابك البنكي لتحويل الرصيد إليه.";
+
+  static const String addBankAccount = "إضافة حساب بنكي";
+  static const String enterYourBankAccountInfo =
+      "أدخل معلوماتك البنكية بدقة لتتمكن من استلام أرباحك عند السحب";
+
+  static const String bankName = "اسم المصرف";
+  static const String bankNameHint = "أدخل اسم المصرف";
+  static const String bankAccountOwnerName = "اسم صاحب الحساب";
+  static const String bankAccountOwnerNameHint = "أدخل اسم صاحب الحساب";
+  static const String bankAccountNumber = "رقم الحساب الكامل";
+  static const String bankAccountNumberHint = "أدخل رقم الحساب البنكي";
+  static const String bankAccountIBANNumber = "رقم الIBAN الخاص بالحساب";
+  static const String bankAccountIBANNumberHint = "أدخل رقم ال IBAN الدولي";
+  static const String addAccount = "إضافة حساب";
+
+  static const String addAccountDialogTitle = "تأكيد إضافة الحساب البنكي";
+  static const String addAccountDialogSubTitle =
+      "هل أنت متأكد من إضافة هذا الحساب البنكي؟ يرجى التأكد من صحة جميع البيانات قبل المتابعة.";
 }
