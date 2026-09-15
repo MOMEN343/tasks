@@ -5,6 +5,10 @@ import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
 
 class ConfirmDialog extends StatelessWidget {
+  final String title;
+  final String subTitle;
+
+  const ConfirmDialog({super.key, required this.title, required this.subTitle});
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -29,7 +33,7 @@ class ConfirmDialog extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    ManagerStrings.confirmWithdrawalDilogTitle,
+                    title,
                     style: TextStyle(
                       color: ManagerColors.primary,
                       fontSize: 20,
@@ -40,7 +44,7 @@ class ConfirmDialog extends StatelessWidget {
                   SizedBox(height: 8),
 
                   Text(
-                    ManagerStrings.confirmWithdrawalDilogsubTitle,
+                    subTitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: ManagerColors.grey,

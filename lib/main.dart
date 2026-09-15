@@ -5,6 +5,7 @@ import 'package:tasks/features/home/screens/home_screen.dart';
 import 'package:tasks/features/onboarding/screens/onboarding2.dart';
 import 'package:tasks/features/onboarding/screens/onboarding3.dart';
 import 'package:tasks/features/onboarding/screens/onboardingScreen.dart';
+import 'package:tasks/features/wallet/screens/add_bank_account.dart';
 import 'package:tasks/features/wallet/screens/wallet_screen.dart';
 import 'features/onboarding/screens/onboarding1.dart';
 import 'features/onboarding/screens/splash_screen.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: ManagerFontFamily.almarai),
-      home: WalletScreen(),
+      home: AddBankAccount(),
     );
   }
 }

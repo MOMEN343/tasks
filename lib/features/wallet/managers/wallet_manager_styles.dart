@@ -22,7 +22,7 @@ class WalletManagerStyles {
 
   static InputDecoration FormFieldDecoration({String? hintText}) {
     return InputDecoration(
-      hintText: ManagerStrings.notesFieldHintText,
+      hintText: hintText,
       hintStyle: WalletManagerStyles.greyLabel,
       contentPadding: const EdgeInsets.all(12),
       enabledBorder: OutlineInputBorder(
