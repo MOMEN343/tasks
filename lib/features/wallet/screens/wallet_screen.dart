@@ -12,8 +12,10 @@ import 'package:tasks/features/wallet/managers/wallet_font_size_manager.dart';
 import 'package:tasks/features/wallet/managers/wallet_manager_image.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:tasks/features/wallet/managers/wallet_manager_styles.dart';
+import 'package:tasks/features/wallet/screens/new_withdrawal_screen.dart';
 import 'package:tasks/features/wallet/widgets/balance_card.dart';
 import 'package:tasks/features/wallet/widgets/ryal_image.dart';
+import 'package:tasks/features/wallet/widgets/top_part.dart';
 import 'package:tasks/features/wallet/widgets/transaction_card.dart';
 
 class WalletScreen extends StatelessWidget {
@@ -29,64 +31,10 @@ class WalletScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+              TopPart(
+                title: ManagerStrings.walletScreenTitle,
+                subTitle: ManagerStrings.walletScreenSubTitle,
                 height: 118,
-                color: ManagerColors.primary,
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: SizedBox(
-                      height: 80,
-                      child: Row(
-                        spacing: 5,
-                        children: [
-                          Container(
-                            width: 32,
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: IconButton(
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                                size: 22,
-                              ),
-                            ),
-                          ),
-                          Column(
-                            spacing: 5,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                ManagerStrings.walletScreenTitle,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: WalletFontSizeManager.larger,
-                                ),
-                              ),
-                              Text(
-                                ManagerStrings.walletScreenSubTitle,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: WalletFontSizeManager.small,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
               ),
 
               Transform.translate(
@@ -100,7 +48,13 @@ class WalletScreen extends StatelessWidget {
                       BalanceCard(),
                       LoginButton(
                         textButton: "طلب سحب أرباح",
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => NewWithdrawalScreen(),
+                            ),
+                          );
+                        },
                       ),
 
                       Text(

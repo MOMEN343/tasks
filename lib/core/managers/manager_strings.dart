@@ -273,4 +273,29 @@ class ManagerStrings {
   static const String transferRequestTransactionTitle = "طلب تحويل من المحفظة";
   static const String completedTransactionStatus = "تم التنفيذ";
   static const String inProgressTransactionStatus = "قيد المعالجة";
+
+  static const String newWithdrawalScreenTitle = "طلب سحب";
+  static const String newWithdrawalScreenSubTitle =
+      "أدخل قيمة السحب وتابع العملية.";
+
+  static const String requiredAmount = "المبلغ المطلوب";
+  static const String newWithdrawalRequest = "طلب سحب جديد";
+  static const String newWithdrawalRequestSubTitle =
+      "اختر قيمة السحب وتأكد من بياناتك البنكية لإتمام التحويل بأمان.";
+
+  static const String maximumLimit = "ألحد الأقصى";
+  static const String notes = "الملاحظات";
+  static const String notesFieldHintText =
+      "إذا كان لديك ملاحظات تخص عملية السحب، اكتبها هنا";
+
+  static const String bankAccount = "الحساب البنكي";
+  static const String changeBankAccount = "تغيير الحساب";
+  static const String confirmWithdrawal = "تأكيد السحب";
+
+  static const String confirmWithdrawalDilogTitle = "تأكيد إرسال الطلب";
+  static const String confirmWithdrawalDilogsubTitle =
+      "هل أنت متأكد من إرسال طلب السحب؟ تأكد من صحة جميع البيانات قبل المتابعة.";
+
+  static const String confirm = "تأكيد ";
+  static const String willtransferIn = "سيتم التحويل خلال 1- 3 أيام عمل";
 }
