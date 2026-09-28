@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 
 import 'package:tasks/core/managers/manager_strings.dart';
-import 'package:tasks/features/authentication/widgets/login_button.dart';
+import 'package:tasks/core/widgets/login_button.dart';
 import 'package:tasks/features/wallet/data/balance.dart';
 import 'package:tasks/features/wallet/data/transaction.dart';
 

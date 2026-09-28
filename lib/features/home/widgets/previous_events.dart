@@ -20,8 +20,15 @@ class PreviousEvents extends StatelessWidget {
           EventCard(
             image: event3.image,
             name: event3.title,
-            eventDate: event3.data,
+            eventDate: event3.date,
             eventEnded: true,
+            time: event3.time,
+            attendanceCount: event3.attendanceCount,
+            budget: event3.budget,
+            invitedCount: event3.invitedCount,
+            giftsCount: event3.giftsCount,
+            totalGiftAmount: event3.totalGiftAmount,
+            averageGiftValue: event3.averageGiftValue
           ),
 
           EventCard(
@@ -29,16 +36,30 @@ class PreviousEvents extends StatelessWidget {
 
             name: event4.title,
 
-            eventDate: event4.data,
+            eventDate: event4.date,
 
             eventEnded: true,
+            time: event4.time,
+            attendanceCount: event4.attendanceCount,
+            budget: event4.budget,
+            invitedCount: event4.invitedCount,
+            giftsCount: event4.giftsCount,
+            totalGiftAmount: event4.totalGiftAmount,
+            averageGiftValue: event4.averageGiftValue
           ),
 
           EventCard(
             image: event3.image,
             name: event3.title,
-            eventDate: event3.data,
+            eventDate: event3.date,
             eventEnded: true,
+            time: event3.time,
+            attendanceCount: event3.attendanceCount,
+            budget: event3.budget,
+            invitedCount: event3.invitedCount,
+            giftsCount: event3.giftsCount,
+            totalGiftAmount: event3.totalGiftAmount,
+            averageGiftValue: event3.averageGiftValue
           ),
         ],
       ),

@@ -245,9 +245,9 @@ class ManagerStrings {
 
   static const String abdullahAndFathia = 'عبدالله وفتحية';
 
-  static const String firstEventDate = '01-12-2025';
+  static DateTime firstEventDate = DateTime(2025, 12, 1);
 
-  static const String secondEventDate = '03-12-2025';
+  static DateTime secondEventDate = DateTime(2025, 12, 3);
 
   // ==================== Previous Events ====================
 
@@ -255,9 +255,9 @@ class ManagerStrings {
 
   static const String abdullahAndFarah = 'عبدالله وفرح';
 
-  static const String previousEventDate = '24-9-2025';
+  static DateTime previousEventDate = DateTime(2025, 9, 24);
 
-  static const String previousEventDateTwo = '19-9-2025';
+  static DateTime previousEventDateTwo = DateTime(2025, 9, 19);
 
   // ==================== Wallet ====================
 
@@ -322,4 +322,30 @@ class ManagerStrings {
   static const String addAccountDialogTitle = "تأكيد إضافة الحساب البنكي";
   static const String addAccountDialogSubTitle =
       "هل أنت متأكد من إضافة هذا الحساب البنكي؟ يرجى التأكد من صحة جميع البيانات قبل المتابعة.";
+
+  // ==================== Details Screen ====================
+
+  static const String confirmedAttendance = "حضور مؤكد";
+  static const String gifts = "إهداءات";
+  static const String ryal = "ريال سعودي";
+  static const String attendanceDetails = "الحضور";
+  static const String giftsDetails = "الإهداءات";
+
+  static const String invitationsStatus = "حالة الدعوات";
+
+  static const String invitationsStatusSubTitle =
+      "متابعة حالة ردود المدعوين بشكل فوري وواضح";
+  static const String apologies = "إعتذارات";
+  static const String awaitingReply = "بإنتظار الرد";
+  static const String guestManagement = "إدارة المدعوين";
+  static const String totalGiftAmount = "إجمالي المبلغ";
+  static const String numberOfGiftGivers = "عدد المهدين";
+  static const String averageGiftValue = "متوسط الهدية";
+  static const String person = "شخص";
+  static const String viewGiftsLog = "عرض سجل الإهداءات";
+
+  static const String giftsLogTitle = "سجل الإهداءات";
+  static const String giftsLogSubTitle =
+      "جميع الإهداءات المالية المستلمة للمناسبة";
+  static const String totalGiftsBalance = "الرصيد الإجمالي";
 }

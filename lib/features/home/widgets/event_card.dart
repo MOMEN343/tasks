@@ -6,14 +6,24 @@ import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/home/data/event_data.dart';
+import 'package:tasks/features/home/managers/manager_date.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
+import 'package:tasks/features/home/screens/event_details_screen.dart';
 
 class EventCard extends StatelessWidget {
   final String image;
   final String name;
-  final String eventDate;
+  final DateTime eventDate;
   final bool eventEnded;
+  final String time;
+  final int attendanceCount;
+  final int budget;
+  final int invitedCount;
+  final int giftsCount;
+  final double totalGiftAmount;
+  final double averageGiftValue;
+  final void Function()? onpressed;
 
   const EventCard({
     super.key,
@@ -21,6 +31,14 @@ class EventCard extends StatelessWidget {
     required this.name,
     required this.eventDate,
     this.eventEnded = false,
+    this.onpressed,
+    required this.time,
+    required this.attendanceCount,
+    required this.budget,
+    required this.invitedCount,
+    required this.giftsCount,
+    required this.totalGiftAmount,
+    required this.averageGiftValue,
   });
 
   @override
@@ -62,7 +80,7 @@ class EventCard extends StatelessWidget {
                             size: 16,
                           ),
                           Text(ManagerStrings.eventDate),
-                          Text("$eventDate"),
+                          Text(ManagerDate.eventCardFormatDate(eventDate)),
                         ],
                       ),
                     ),
@@ -136,7 +154,7 @@ class EventCard extends StatelessWidget {
                               children: [
                                 Icon(Icons.people_alt_outlined, size: 24),
                                 Text(
-                                  ManagerStrings.attendanceCount,
+                                  attendanceCount.toString(),
                                   style: TextStyle(
                                     fontSize: ManagerFontSize.larg,
                                   ),
@@ -155,7 +173,7 @@ class EventCard extends StatelessWidget {
                                   size: 24,
                                 ),
                                 Text(
-                                  ManagerStrings.budget,
+                                  budget.toString(),
                                   style: TextStyle(
                                     fontSize: ManagerFontSize.larg,
                                   ),
@@ -177,7 +195,7 @@ class EventCard extends StatelessWidget {
                               children: [
                                 Icon(Icons.calendar_today_rounded, size: 24),
                                 Text(
-                                  ManagerStrings.invitedCount,
+                                  invitedCount.toString(),
                                   style: TextStyle(
                                     fontSize: ManagerFontSize.larg,
                                   ),
@@ -193,7 +211,24 @@ class EventCard extends StatelessWidget {
                 ),
 
                 MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EventDetailsScreen(
+                          title: name,
+                          date: eventDate,
+                          time: time,
+                          attendanceCount: attendanceCount,
+                          budget: budget,
+                          invitedCount: invitedCount,
+                          giftsCount: giftsCount,
+                          image: image,
+                          totalGiftAmount: totalGiftAmount,
+                          averageGiftValue: averageGiftValue,
+                        ),
+                      ),
+                    );
+                  },
                   color: ManagerColors.primary,
                   textColor: Colors.white,
 
