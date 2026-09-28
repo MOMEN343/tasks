@@ -8,7 +8,7 @@ import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/account_created_successfully.dart';
-import 'package:tasks/features/authentication/widgets/login_button.dart';
+import 'package:tasks/core/widgets/login_button.dart';
 
 class NewAccountVerification extends StatefulWidget {
   final String phoneNumber;

@@ -2,7 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
-import 'package:tasks/features/authentication/widgets/login_button.dart';
+import 'package:tasks/core/widgets/login_button.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
 import 'package:tasks/features/home/widgets/count_container.dart';

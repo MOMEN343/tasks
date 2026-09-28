@@ -7,7 +7,7 @@ import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/new_account.dart';
 import 'package:tasks/features/authentication/screens/reset_password.dart';
-import 'package:tasks/features/authentication/widgets/login_button.dart';
+import 'package:tasks/core/widgets/login_button.dart';
 import 'package:tasks/features/authentication/widgets/password_field.dart';
 import 'package:tasks/features/authentication/widgets/phone_feild.dart';
 

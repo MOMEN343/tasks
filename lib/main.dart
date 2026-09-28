@@ -10,8 +10,13 @@ import 'package:tasks/features/wallet/screens/wallet_screen.dart';
 import 'features/onboarding/screens/onboarding1.dart';
 import 'features/onboarding/screens/splash_screen.dart';
 import 'features/onboarding/screens/splash_screen2.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting('ar');
+
   runApp(const MyApp());
 }
 
@@ -21,8 +26,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: ManagerFontFamily.almarai),
-      home: AddBankAccount(),
+      theme: ThemeData(
+        fontFamily: ManagerFontFamily.almarai,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+      home: HomeScreen(),
     );
   }
 }

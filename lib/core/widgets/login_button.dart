@@ -5,16 +5,18 @@ import 'package:tasks/features/authentication/managers/manager_styles.dart';
 class LoginButton extends StatelessWidget {
   final String textButton;
   final VoidCallback onPressed;
+  final double? height;
   const LoginButton({
     super.key,
     required this.textButton,
     required this.onPressed,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 44,
+      height: height,
       child: ElevatedButton(
         onPressed: onPressed,
 
@@ -24,7 +26,7 @@ class LoginButton extends StatelessWidget {
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
 
-          minimumSize: Size(double.infinity, 44),
+          minimumSize: Size(double.infinity, height ?? 44),
         ),
         child: Text(textButton),
       ),

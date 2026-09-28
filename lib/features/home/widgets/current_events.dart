@@ -6,7 +6,7 @@ import 'package:tasks/features/home/models/event_model.dart';
 import 'package:tasks/features/home/widgets/event_card.dart';
 
 class CurrentEvents extends StatelessWidget {
-  CurrentEvents({super.key});
+  const CurrentEvents({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +20,27 @@ class CurrentEvents extends StatelessWidget {
 
             name: event1.title,
 
-            eventDate: event1.data,
+            eventDate: event1.date,
+            time: event1.time,
+            attendanceCount: event1.attendanceCount,
+            budget: event1.budget,
+            invitedCount: event1.invitedCount,
+            giftsCount: event1.giftsCount,
+            totalGiftAmount: event1.totalGiftAmount,
+            averageGiftValue: event1.averageGiftValue,
           ),
 
           EventCard(
             image: event2.image,
             name: event2.title,
-            eventDate: event2.data,
+            eventDate: event2.date,
+            time: event2.time,
+            attendanceCount: event2.attendanceCount,
+            budget: event2.budget,
+            invitedCount: event2.invitedCount,
+            giftsCount: event2.giftsCount,
+            totalGiftAmount: event2.totalGiftAmount,
+            averageGiftValue: event2.averageGiftValue,
           ),
 
           EventCard(
@@ -34,7 +48,14 @@ class CurrentEvents extends StatelessWidget {
 
             name: event1.title,
 
-            eventDate: event1.data,
+            eventDate: event1.date,
+            time: event1.time,
+            attendanceCount: event1.attendanceCount,
+            budget: event1.budget,
+            invitedCount: event1.invitedCount,
+            giftsCount: event1.giftsCount,
+            totalGiftAmount: event1.totalGiftAmount,
+            averageGiftValue: event1.averageGiftValue,
           ),
         ],
       ),

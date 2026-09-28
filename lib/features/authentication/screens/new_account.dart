@@ -8,7 +8,7 @@ import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
 import 'package:tasks/features/authentication/screens/new_account_verification.dart';
-import 'package:tasks/features/authentication/widgets/login_button.dart';
+import 'package:tasks/core/widgets/login_button.dart';
 import 'package:tasks/features/authentication/widgets/password_field.dart';
 import 'package:tasks/features/authentication/widgets/phone_feild.dart';
 import 'package:tasks/features/onboarding/managers/manager_font_size.dart'

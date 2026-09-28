@@ -5,7 +5,7 @@ import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
-import 'package:tasks/features/authentication/widgets/login_button.dart';
+import 'package:tasks/core/widgets/login_button.dart';
 
 class AccountCreatedSuccessfully extends StatelessWidget {
   const AccountCreatedSuccessfully({super.key});
