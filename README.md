@@ -1,58 +1,58 @@
 # Tasks
 
-Flutter UI implementation for the Tasks application.
+تطبيق Flutter بواجهة عربية لإدارة المناسبات والمهام ومتابعة الأرصدة والعمليات المرتبطة بها. يحتوي المشروع على شاشات التسجيل والمصادقة، واستعراض المناسبات، وإضافة مناسبة، إضافةً إلى واجهات المحفظة والإهداءات.
 
-## Features
+> المشروع قيد التطوير. بعض الشاشات تعرض بيانات تجريبية محلية، ووجود واجهة أو تدفق بصري لا يعني أن العملية مرتبطة بالكامل بخدمة خلفية.
 
-### Splash & Onboarding
+## الميزات والشاشات
 
-- Splash screens
-- Onboarding screens
-- PageView navigation
-- Custom widgets
-- Custom colors
-- Almarai font integration
+- **التهيئة والتعريف:** شاشات Splash وOnboarding مع تنقّل باستخدام `PageView`.
+- **المصادقة:** تسجيل الدخول وإنشاء حساب، التحقق، إعادة تعيين كلمة المرور، تعيين كلمة مرور جديدة، وشاشات نجاح الإنشاء والتغيير.
+- **المناسبات:** الصفحة الرئيسية، عرض المناسبات الحالية والسابقة، تفاصيل المناسبة، ونموذج إضافة مناسبة متعدد الخطوات.
+- **المحفظة والإهداءات:** عرض الرصيد وسجل العمليات، نموذج طلب سحب، إضافة حساب بنكي، وسجل الإهداءات.
+- **الواجهة:** دعم اتجاه الكتابة من اليمين إلى اليسار، خط Almarai، وأصول SVG وPNG.
 
-### Authentication
+## التقنيات
 
-- Login screen
-- Create account screen
-- Password reset flow
-- Verification screen
-- New password screen
-- Account creation success screen
-- Password change success screen
+- Flutter وDart (يتطلب المشروع Dart SDK `^3.11.5`)
+- Supabase Flutter
+- `flutter_svg` لعرض ملفات SVG
+- `intl` لتنسيق التواريخ والأرقام
+- `intl_phone_field` و`pinput`
+- `font_awesome_flutter` و`dotted_border`
 
-### Home
+## بنية المشروع
 
-- Home screen
-- Custom event/task cards
-- Custom navigation UI
-- Responsive layouts
-- Reusable UI components
+```text
+lib/
+├── core/                   # موارد ومكوّنات مشتركة
+├── features/
+│   ├── authentication/     # شاشات ومكوّنات المصادقة
+│   ├── home/               # المناسبات والصفحة الرئيسية والإهداءات
+│   ├── onboarding/         # شاشات البداية والتعريف
+│   └── wallet/             # المحفظة والسحب والحسابات البنكية
+└── main.dart               # نقطة تشغيل التطبيق وتهيئة الخدمات
 
-### Add Event
+assets/
+├── fonts/                  # ملفات خط Almarai
+└── images/                 # صور ورسومات SVG/PNG
+```
 
-- Add new event screen
-- Event details form
-- Custom progress indicator
+## التشغيل
 
-## Project Structure
+تأكد من تثبيت Flutter SDK بما يتوافق مع إصدار Dart المطلوب، ثم نفّذ من جذر المشروع:
 
-The project follows a feature-based structure:
+```bash
+flutter pub get
+flutter run
+```
 
-- `core/` - Shared managers and common resources
-- `features/onboarding/` - Onboarding screens and widgets
-- `features/authentication/` - Authentication screens and widgets
-- `features/home/` - Home and event-related screens and widgets
+## إعداد Supabase
 
-## Technologies
+تتم تهيئة Supabase عند بدء التطبيق في `lib/main.dart`. قبل ربط المشروع ببيئتك، حدّث عنوان المشروع ومفتاحه بما يخص مشروع Supabase الخاص بك. استخدم مفتاحًا عامًا مخصصًا للتطبيق، ولا تضع مفتاح `service_role` أو أي سرّ إداري في تطبيق العميل.
 
-- Flutter
-- Dart
-- SVG assets
-- Almarai Font
-- Font Awesome
-- Intl Phone Field
-- Pinput
-- Dotted Border
+## ملاحظات التطوير
+
+- يبدأ التطبيق حاليًا بشاشة إنشاء الحساب (`NewAccount`)؛ شاشات Splash وOnboarding موجودة ضمن المشروع لكنها ليست شاشة البدء الحالية.
+- بيانات المستخدمين والمناسبات والأرصدة والمعاملات المعروضة في بعض الشاشات معرفة محليًا لأغراض الواجهة.
+- راجع اتصال كل تدفق بالخلفية قبل اعتباره عملية فعلية، خصوصًا التسجيل والسحب وإضافة الحساب البنكي.
