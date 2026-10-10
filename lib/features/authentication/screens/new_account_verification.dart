@@ -9,17 +9,24 @@ import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/account_created_successfully.dart';
 import 'package:tasks/core/widgets/login_button.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class NewAccountVerification extends StatefulWidget {
   final String phoneNumber;
+  final String userName;
 
-  const NewAccountVerification({super.key, required this.phoneNumber});
+  const NewAccountVerification({
+    super.key,
+    required this.phoneNumber,
+    required this.userName,
+  });
 
   @override
   State<StatefulWidget> createState() => _NewAccountVerification();
 }
 
 class _NewAccountVerification extends State<NewAccountVerification> {
+  String otpCode = '';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -97,6 +104,9 @@ class _NewAccountVerification extends State<NewAccountVerification> {
                                   Pinput(
                                     length: 6,
                                     keyboardType: TextInputType.number,
+                                    onCompleted: (value) {
+                                      otpCode = value;
+                                    },
                                     focusedPinTheme: PinTheme(
                                       width: 49,
                                       height: 56,
@@ -145,7 +155,27 @@ class _NewAccountVerification extends State<NewAccountVerification> {
                               padding: const EdgeInsets.only(top: 74),
                               child: LoginButton(
                                 textButton: ManagerStrings.verificationNext,
-                                onPressed: () {
+                                onPressed: () async {
+                                  if (otpCode.length != 6) {
+                                    return;
+                                  }
+                                  final response = await Supabase
+                                      .instance
+                                      .client
+                                      .auth
+                                      .verifyOTP(
+                                        phone: widget.phoneNumber,
+                                        token: otpCode,
+                                        type: OtpType.sms,
+                                      );
+
+                                  await Supabase.instance.client
+                                      .from("profiles")
+                                      .insert({
+                                        'id': response.user!.id,
+                                        'name': widget.userName,
+                                      });
+
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                       builder: (context) =>

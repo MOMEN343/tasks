@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
-import 'package:tasks/core/managers/manager_colors.dart';
-
 import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/core/widgets/login_button.dart';
-import 'package:tasks/features/wallet/data/balance.dart';
 import 'package:tasks/features/wallet/data/transaction.dart';
 
 import 'package:tasks/features/wallet/managers/wallet_font_size_manager.dart';
-import 'package:tasks/features/wallet/managers/wallet_manager_image.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:tasks/features/wallet/managers/wallet_manager_styles.dart';
 import 'package:tasks/features/wallet/screens/new_withdrawal_screen.dart';
 import 'package:tasks/features/wallet/widgets/balance_card.dart';
-import 'package:tasks/features/wallet/widgets/ryal_image.dart';
 import 'package:tasks/features/wallet/widgets/top_part.dart';
 import 'package:tasks/features/wallet/widgets/transaction_card.dart';
 

@@ -587,7 +587,9 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                       style: ManagerTextStyles.label,
                                     ),
                                     TextFormFeildStyle(
-                                      validator: (v) {},
+                                      validator: (v) {
+                                        return null;
+                                      },
                                       hintText: ManagerStrings.eventNameHint,
                                       width: double.infinity,
                                     ),
@@ -608,7 +610,9 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                           ),
                                           TextFormFeildStyle(
                                             hintText: ManagerStrings.dateHint,
-                                            validator: (v) {},
+                                            validator: (v) {
+                                              return null;
+                                            },
                                             width:
                                                 (MediaQuery.of(
                                                   context,
@@ -637,7 +641,9 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             style: ManagerTextStyles.label,
                                           ),
                                           TextFormFeildStyle(
-                                            validator: (v) {},
+                                            validator: (v) {
+                                              return null;
+                                            },
                                             hintText: ManagerStrings
                                                 .eventStartTimeHint,
                                             width:
@@ -668,7 +674,9 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                       style: ManagerTextStyles.label,
                                     ),
                                     TextFormFeildStyle(
-                                      validator: (v) {},
+                                      validator: (v) {
+                                        return null;
+                                      },
                                       hintText:
                                           ManagerStrings.locationAndDetailsHint,
                                       hight: 109,

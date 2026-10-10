@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tasks/core/managers/manager_colors.dart';
-import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 
 class PasswordField extends StatefulWidget {

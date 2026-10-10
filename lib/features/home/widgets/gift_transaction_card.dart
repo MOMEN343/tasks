@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:tasks/core/managers/manager_colors.dart';
-import 'package:tasks/features/home/data/gift_transactions.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
 import 'package:tasks/features/home/models/gift_transaction.dart';
 import 'package:tasks/features/wallet/widgets/ryal_image.dart';
@@ -49,10 +48,7 @@ class GiftTransactionCard extends StatelessWidget {
                 ],
               ),
 
-              Text(
-                "${giftTransaction.date}",
-                style: ManagerTextStyles.subCardTitle,
-              ),
+              Text(giftTransaction.date, style: ManagerTextStyles.subCardTitle),
             ],
           ),
         ),

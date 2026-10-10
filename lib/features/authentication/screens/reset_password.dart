@@ -8,6 +8,7 @@ import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/verification_screen.dart';
 import 'package:tasks/core/widgets/login_button.dart';
 import 'package:tasks/features/authentication/widgets/phone_feild.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -17,6 +18,7 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPassword extends State<ResetPassword> {
+  bool isLoading = false;
   String phoneNumber = "";
 
   @override
@@ -81,7 +83,9 @@ class _ResetPassword extends State<ResetPassword> {
                             spacing: 10,
                             children: [
                               PhoneField(
-                                validator: (value) {},
+                                validator: (value) {
+                                  return null;
+                                },
                                 onChanged: (phone) {
                                   phoneNumber = phone;
                                 },
@@ -89,14 +93,71 @@ class _ResetPassword extends State<ResetPassword> {
 
                               LoginButton(
                                 textButton: ManagerStrings.reset,
-                                onPressed: () {
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) => VerificationScreen(
-                                        phoneNumber: phoneNumber,
+                                isLoading: isLoading,
+                                onPressed: () async {
+                                  if (isLoading) return;
+                                  if (phoneNumber.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          "الرجاء إدخال رقم الهاتف",
+                                          textDirection: TextDirection.rtl,
+                                        ),
+                                        backgroundColor: Colors.red,
+                                        behavior: SnackBarBehavior.floating,
+                                        duration: Duration(seconds: 3),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                    return;
+                                  }
+
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+
+                                  try {
+                                    await Supabase.instance.client.auth
+                                        .signInWithOtp(
+                                          phone: phoneNumber,
+                                          shouldCreateUser: false,
+                                        );
+                                    if (!mounted) return;
+
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            VerificationScreen(
+                                              phoneNumber: phoneNumber,
+                                            ),
+                                      ),
+                                    );
+                                  } on AuthApiException catch (e) {
+                                    if (!mounted) return;
+                                    final message =
+                                        e.message.contains(
+                                          'Signups not allowed for otp',
+                                        )
+                                        ? 'رقم الهاتف غير مسجل لدينا'
+                                        : e.message;
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          message,
+                                          textDirection: TextDirection.rtl,
+                                        ),
+                                        backgroundColor: Colors.red,
+                                        behavior: SnackBarBehavior.floating,
+                                        duration: Duration(seconds: 3),
+                                      ),
+                                    );
+                                  } finally {
+                                    if (mounted) {
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                    }
+                                  }
                                 },
                               ),
                             ],

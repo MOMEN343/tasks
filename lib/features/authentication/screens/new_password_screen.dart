@@ -8,6 +8,7 @@ import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/password_changed_successfully.dart';
 import 'package:tasks/core/widgets/login_button.dart';
 import 'package:tasks/features/authentication/widgets/password_field.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({super.key});
@@ -18,6 +19,15 @@ class NewPasswordScreen extends StatefulWidget {
 
 class _NewPasswordScreen extends State<NewPasswordScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController newPassword = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
+
+  @override
+  void dispose() {
+    newPassword.dispose();
+    confirmPassword.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,12 +98,13 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
 
                                           PasswordField(
                                             hintText: ManagerStrings.password,
-                                            controller: TextEditingController(),
+                                            controller: newPassword,
                                             validator: (value) {
                                               if (value!.length < 6) {
                                                 return ManagerStrings
                                                     .passwordTooShort;
                                               }
+                                              return null;
                                             },
                                           ),
 
@@ -133,8 +144,13 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                                           PasswordField(
                                             hintText:
                                                 ManagerStrings.confirmPassword,
-                                            validator: (value) {},
-                                            controller: TextEditingController(),
+                                            validator: (value) {
+                                              if (value != newPassword.text) {
+                                                return 'كلمتا المرور غير متطابقتين';
+                                              }
+                                              return null;
+                                            },
+                                            controller: confirmPassword,
                                           ),
                                         ],
                                       ),
@@ -148,12 +164,27 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
 
                         LoginButton(
                           textButton: ManagerStrings.saveUpdate,
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      PasswordChangedSuccessfully(),
+                          onPressed: () async {
+                            try {
+                              if (formKey.currentState!.validate()) {
+                                await Supabase.instance.client.auth.updateUser(
+                                  UserAttributes(password: newPassword.text),
+                                );
+
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PasswordChangedSuccessfully(),
+                                  ),
+                                );
+                              }
+                            } on AuthException catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.toString()),
+                                  backgroundColor: Colors.red,
+                                  behavior: SnackBarBehavior.floating,
+                                  duration: Duration(seconds: 3),
                                 ),
                               );
                             }
