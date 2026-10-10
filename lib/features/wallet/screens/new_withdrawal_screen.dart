@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart' as intl;
@@ -130,7 +128,7 @@ class NewWithdrawalScreen extends StatelessWidget {
                                 initialValue: "0",
 
                                 decoration:
-                                    WalletManagerStyles.FormFieldDecoration(),
+                                    WalletManagerStyles.formFieldDecoration(),
                               ),
 
                               Row(
@@ -169,7 +167,7 @@ class NewWithdrawalScreen extends StatelessWidget {
                                 },
                                 maxLines: 5,
                                 decoration:
-                                    WalletManagerStyles.FormFieldDecoration(
+                                    WalletManagerStyles.formFieldDecoration(
                                       hintText:
                                           ManagerStrings.notesFieldHintText,
                                     ),

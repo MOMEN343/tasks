@@ -22,7 +22,7 @@ class AddAccountFormField extends StatelessWidget {
         Text(label, style: WalletManagerStyles.blackLabel),
         TextFormField(
           validator: validator,
-          decoration: WalletManagerStyles.FormFieldDecoration(
+          decoration: WalletManagerStyles.formFieldDecoration(
             hintText: hintText,
           ),
         ),

@@ -6,11 +6,14 @@ class LoginButton extends StatelessWidget {
   final String textButton;
   final VoidCallback onPressed;
   final double? height;
+  final bool isLoading;
+
   const LoginButton({
     super.key,
     required this.textButton,
     required this.onPressed,
     this.height,
+    this.isLoading = false,
   });
 
   @override
@@ -28,7 +31,16 @@ class LoginButton extends StatelessWidget {
 
           minimumSize: Size(double.infinity, height ?? 44),
         ),
-        child: Text(textButton),
+        child: isLoading
+            ? SizedBox(
+                width: 22,
+                height: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+            : Text(textButton),
       ),
     );
   }

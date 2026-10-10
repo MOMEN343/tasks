@@ -14,6 +14,7 @@ import 'package:tasks/features/authentication/widgets/phone_feild.dart';
 import 'package:tasks/features/home/screens/home_screen.dart';
 import 'package:tasks/features/onboarding/managers/manager_font_size.dart'
     show ManagerFontSize;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,7 +26,23 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreen extends State<LoginScreen> {
   String phoneNumber = '';
   bool obscurePassword = true;
+  bool isLoading = false;
+  final TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> formkey = GlobalKey();
+
+  void showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message, textDirection: TextDirection.rtl),
+        backgroundColor: Colors.red.shade700,
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -120,7 +137,7 @@ class _LoginScreen extends State<LoginScreen> {
 
                                       return null;
                                     },
-                                    controller: TextEditingController(),
+                                    controller: passwordController,
                                   ),
 
                                   TextButton(
@@ -144,13 +161,56 @@ class _LoginScreen extends State<LoginScreen> {
 
                                   LoginButton(
                                     textButton: ManagerStrings.login,
-                                    onPressed: () {
+                                    isLoading: isLoading,
+                                    onPressed: () async {
+                                      if (isLoading) return;
                                       if (formkey.currentState!.validate()) {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) => HomeScreen(),
-                                          ),
-                                        );
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        try {
+                                          final response = await Supabase
+                                              .instance
+                                              .client
+                                              .auth
+                                              .signInWithPassword(
+                                                phone: phoneNumber,
+                                                password:
+                                                    passwordController.text,
+                                              );
+
+                                          if (response.user != null) {
+                                            Navigator.of(
+                                              context,
+                                            ).pushReplacement(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    HomeScreen(),
+                                              ),
+                                            );
+                                          }
+                                        } on AuthException catch (e) {
+                                          if (e.statusCode == '400' &&
+                                              e.code == 'invalid_credentials') {
+                                            showErrorMessage(
+                                              'رقم الهاتف أو كلمة المرور غير صحيحة',
+                                            );
+                                          } else {
+                                            showErrorMessage(
+                                              'تعذر تسجيل الدخول، حاول مرة أخرى',
+                                            );
+                                          }
+                                        } catch (e) {
+                                          showErrorMessage(
+                                            'حدث خطأ في الاتصال، تحقق من الإنترنت',
+                                          );
+                                        } finally {
+                                          if (mounted) {
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                          }
+                                        }
                                       }
                                     },
                                   ),

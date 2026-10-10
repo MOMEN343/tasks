@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
-import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/wallet/managers/wallet_font_size_manager.dart';
 
 class WalletManagerStyles {
@@ -20,7 +19,7 @@ class WalletManagerStyles {
     fontWeight: FontWeight(400),
   );
 
-  static InputDecoration FormFieldDecoration({String? hintText}) {
+  static InputDecoration formFieldDecoration({String? hintText}) {
     return InputDecoration(
       hintText: hintText,
       hintStyle: WalletManagerStyles.greyLabel,

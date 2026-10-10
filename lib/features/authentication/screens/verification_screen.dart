@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pinput/pinput.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
@@ -20,6 +21,7 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreen extends State<VerificationScreen> {
+  String otpCode = '';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -99,6 +101,9 @@ class _VerificationScreen extends State<VerificationScreen> {
                                     Pinput(
                                       length: 6,
                                       keyboardType: TextInputType.number,
+                                      onCompleted: (value) {
+                                        otpCode = value;
+                                      },
                                       focusedPinTheme: PinTheme(
                                         width: 49,
                                         height: 56,
@@ -151,13 +156,31 @@ class _VerificationScreen extends State<VerificationScreen> {
                                 padding: EdgeInsetsGeometry.only(top: 74),
                                 child: LoginButton(
                                   textButton: ManagerStrings.next,
-                                  onPressed: () {
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            NewPasswordScreen(),
-                                      ),
-                                    );
+                                  onPressed: () async {
+                                    if (otpCode.length != 6) {
+                                      return;
+                                    }
+                                    try {
+                                      await Supabase.instance.client.auth
+                                          .verifyOTP(
+                                            phone: widget.phoneNumber,
+                                            token: otpCode,
+                                            type: OtpType.sms,
+                                          );
+
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              NewPasswordScreen(),
+                                        ),
+                                      );
+                                    } on AuthException catch (e) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(content: Text(e.message)),
+                                      );
+                                    }
                                   },
                                 ),
                               ),

@@ -4,9 +4,13 @@ import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/features/wallet/managers/wallet_manager_image.dart';
 
 class RyalImage extends StatelessWidget {
-  int size;
-  Color color;
-  RyalImage({super.key, this.size = 12,  this.color = ManagerColors.secondary});
+  final int size;
+  final Color color;
+  const RyalImage({
+    super.key,
+    this.size = 12,
+    this.color = ManagerColors.secondary,
+  });
 
   @override
   Widget build(BuildContext context) {

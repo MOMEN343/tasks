@@ -9,6 +9,8 @@ import 'package:tasks/features/wallet/widgets/ryal_image.dart';
 
 class BalanceCard extends StatelessWidget {
   final formatter = intl.NumberFormat('#,###');
+
+  BalanceCard({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(

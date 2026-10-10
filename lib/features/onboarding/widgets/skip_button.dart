@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
-import 'package:tasks/features/authentication/screens/login_screen.dart';
 import 'package:tasks/features/onboarding/managers/manager_strings.dart';
-import 'package:tasks/features/onboarding/screens/onboarding3.dart';
 
 class SkipButton extends StatelessWidget {
   final PageController controller;

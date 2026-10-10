@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/home/data/event_data.dart';
-import 'package:tasks/features/home/managers/manager_image.dart';
 import 'package:tasks/features/home/widgets/event_card.dart';
 
 class PreviousEvents extends StatelessWidget {
@@ -28,7 +25,7 @@ class PreviousEvents extends StatelessWidget {
             invitedCount: event3.invitedCount,
             giftsCount: event3.giftsCount,
             totalGiftAmount: event3.totalGiftAmount,
-            averageGiftValue: event3.averageGiftValue
+            averageGiftValue: event3.averageGiftValue,
           ),
 
           EventCard(
@@ -45,7 +42,7 @@ class PreviousEvents extends StatelessWidget {
             invitedCount: event4.invitedCount,
             giftsCount: event4.giftsCount,
             totalGiftAmount: event4.totalGiftAmount,
-            averageGiftValue: event4.averageGiftValue
+            averageGiftValue: event4.averageGiftValue,
           ),
 
           EventCard(
@@ -59,7 +56,7 @@ class PreviousEvents extends StatelessWidget {
             invitedCount: event3.invitedCount,
             giftsCount: event3.giftsCount,
             totalGiftAmount: event3.totalGiftAmount,
-            averageGiftValue: event3.averageGiftValue
+            averageGiftValue: event3.averageGiftValue,
           ),
         ],
       ),

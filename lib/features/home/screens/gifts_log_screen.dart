@@ -7,10 +7,8 @@ import 'package:tasks/core/widgets/login_button.dart';
 import 'package:tasks/features/home/data/gift_transactions.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
 import 'package:tasks/features/home/widgets/gift_transaction_card.dart';
-import 'package:tasks/features/wallet/data/transaction.dart';
 import 'package:tasks/features/wallet/widgets/ryal_image.dart';
 import 'package:tasks/features/wallet/widgets/top_part.dart';
-import 'package:tasks/features/wallet/widgets/transaction_card.dart';
 
 class GiftsLogScreen extends StatelessWidget {
   final formatter = intl.NumberFormat('#,###');

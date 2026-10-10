@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:tasks/core/managers/manager_colors.dart';
-import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/login_screen.dart';
 import 'package:tasks/features/authentication/screens/new_account_verification.dart';
@@ -25,8 +24,20 @@ class _NewAccount extends State<NewAccount> {
   String phoneNumber = '';
   GlobalKey<FormState> formKey = GlobalKey();
 
+  TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -90,6 +101,7 @@ class _NewAccount extends State<NewAccount> {
                                       ),
 
                                       TextFormField(
+                                        controller: nameController,
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
                                             return 'هذا الحقل مطلوب';
@@ -196,16 +208,29 @@ class _NewAccount extends State<NewAccount> {
 
                                   LoginButton(
                                     textButton: ManagerStrings.createNewAccount,
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (formKey.currentState!.validate()) {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                NewAccountVerification(
-                                                  phoneNumber: phoneNumber,
-                                                ),
-                                          ),
-                                        );
+                                        final response = await Supabase
+                                            .instance
+                                            .client
+                                            .auth
+                                            .signUp(
+                                              phone: phoneNumber,
+                                              password: passwordController.text,
+                                            );
+
+                                        if (response.user != null) {
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NewAccountVerification(
+                                                    phoneNumber: phoneNumber,
+                                                    userName:
+                                                        nameController.text,
+                                                  ),
+                                            ),
+                                          );
+                                        }
                                       }
                                     },
                                   ),
