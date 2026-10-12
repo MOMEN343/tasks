@@ -208,28 +208,61 @@ class _NewAccount extends State<NewAccount> {
 
                                   LoginButton(
                                     textButton: ManagerStrings.createNewAccount,
+                                    isLoading: isLoading,
                                     onPressed: () async {
+                                      if (isLoading) return;
                                       if (formKey.currentState!.validate()) {
-                                        final response = await Supabase
-                                            .instance
-                                            .client
-                                            .auth
-                                            .signUp(
-                                              phone: phoneNumber,
-                                              password: passwordController.text,
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        try {
+                                          final response = await Supabase
+                                              .instance
+                                              .client
+                                              .auth
+                                              .signUp(
+                                                phone: phoneNumber,
+                                                password:
+                                                    passwordController.text,
+                                              );
+                                          debugPrint(
+                                            'SignUp user: ${response.user?.id}',
+                                          );
+                                          debugPrint(
+                                            'SignUp session exists: ${response.session != null}',
+                                          );
+                                          if (response.user != null) {
+                                            Navigator.of(
+                                              context,
+                                            ).pushReplacement(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NewAccountVerification(
+                                                      phoneNumber: phoneNumber,
+                                                      userName:
+                                                          nameController.text,
+                                                    ),
+                                              ),
                                             );
-
-                                        if (response.user != null) {
-                                          Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  NewAccountVerification(
-                                                    phoneNumber: phoneNumber,
-                                                    userName:
-                                                        nameController.text,
-                                                  ),
+                                          }
+                                        } on AuthApiException catch (e) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(e.toString()),
+                                              backgroundColor: Colors.red,
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              duration: Duration(seconds: 3),
                                             ),
                                           );
+                                        } finally {
+                                          if (mounted) {
+                                            setState(() {
+                                              isLoading = false;
+                                            });
+                                          }
                                         }
                                       }
                                     },

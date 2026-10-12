@@ -180,9 +180,7 @@ class _LoginScreen extends State<LoginScreen> {
                                               );
 
                                           if (response.user != null) {
-                                            Navigator.of(
-                                              context,
-                                            ).pushReplacement(
+                                            Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     HomeScreen(),

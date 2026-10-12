@@ -27,6 +27,7 @@ class NewAccountVerification extends StatefulWidget {
 
 class _NewAccountVerification extends State<NewAccountVerification> {
   String otpCode = '';
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -156,32 +157,53 @@ class _NewAccountVerification extends State<NewAccountVerification> {
                               child: LoginButton(
                                 textButton: ManagerStrings.verificationNext,
                                 onPressed: () async {
+                                  if (isLoading) return;
                                   if (otpCode.length != 6) {
                                     return;
                                   }
-                                  final response = await Supabase
-                                      .instance
-                                      .client
-                                      .auth
-                                      .verifyOTP(
-                                        phone: widget.phoneNumber,
-                                        token: otpCode,
-                                        type: OtpType.sms,
-                                      );
+                                  try {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    final response = await Supabase
+                                        .instance
+                                        .client
+                                        .auth
+                                        .verifyOTP(
+                                          phone: widget.phoneNumber,
+                                          token: otpCode,
+                                          type: OtpType.sms,
+                                        );
 
-                                  await Supabase.instance.client
-                                      .from("profiles")
-                                      .insert({
-                                        'id': response.user!.id,
-                                        'name': widget.userName,
+                                    await Supabase.instance.client
+                                        .from("profiles")
+                                        .insert({
+                                          'id': response.user!.id,
+                                          'name': widget.userName,
+                                        });
+
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            AccountCreatedSuccessfully(),
+                                      ),
+                                    );
+                                  } on AuthApiException catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(e.toString()),
+                                        backgroundColor: Colors.red,
+                                        behavior: SnackBarBehavior.floating,
+                                        duration: Duration(seconds: 3),
+                                      ),
+                                    );
+                                  } finally {
+                                    if (mounted) {
+                                      setState(() {
+                                        isLoading = false;
                                       });
-
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          AccountCreatedSuccessfully(),
-                                    ),
-                                  );
+                                    }
+                                  }
                                 },
                               ),
                             ),
