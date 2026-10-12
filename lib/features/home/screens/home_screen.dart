@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
@@ -132,15 +133,27 @@ class _HomeScreen extends State<HomeScreen>
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  IconContainer(
-                                    icon: Icons.notifications_none_sharp,
+                                  InkWell(
+                                    child: IconContainer(
+                                      icon: Icons.notifications_none_sharp,
+                                    ),
                                   ),
 
-                                  IconContainer(
-                                    icon: Icons.account_balance_wallet_outlined,
+                                  InkWell(
+                                    child: IconContainer(
+                                      icon:
+                                          Icons.account_balance_wallet_outlined,
+                                    ),
                                   ),
 
-                                  IconContainer(icon: Icons.settings_outlined),
+                                  InkWell(
+                                    onTap: () async {
+                                      await Supabase.instance.client.auth
+                                          .signOut();
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: IconContainer(icon: Icons.logout),
+                                  ),
                                 ],
                               ),
                             ],

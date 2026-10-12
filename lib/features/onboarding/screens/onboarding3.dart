@@ -14,6 +14,7 @@ import 'package:tasks/features/onboarding/managers/manager_styles.dart';
 
 import 'package:tasks/features/onboarding/widgets/onboarding_indicator.dart';
 import 'package:tasks/features/onboarding/widgets/skip_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Onboarding3 extends StatelessWidget {
   final PageController controller;
@@ -80,7 +81,13 @@ class Onboarding3 extends StatelessWidget {
                             44,
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          final preferences =
+                              await SharedPreferences.getInstance();
+                          await preferences.setBool('hasSeenOnboarding', true);
+
+                          if (!context.mounted) return;
+
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => NewAccount(),
@@ -97,7 +104,13 @@ class Onboarding3 extends StatelessWidget {
                       ),
 
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final preferences =
+                              await SharedPreferences.getInstance();
+                          preferences.setBool('hasSeenOnboarding', true);
+
+                          if (!context.mounted) return;
+
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => LoginScreen(),
