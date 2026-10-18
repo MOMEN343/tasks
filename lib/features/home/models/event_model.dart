@@ -21,6 +21,23 @@ class EventModel {
     required this.budget,
     required this.invitedCount,
     required this.giftsCount,
-    required this.totalGiftAmount, required this.averageGiftValue,
+    required this.totalGiftAmount,
+    required this.averageGiftValue,
   });
+
+  factory EventModel.fromJson(Map<String, dynamic> json) {
+    return EventModel(
+      title: json['title'] as String,
+      image: json['image_url'] as String,
+      address: json['address'] as String,
+      date: DateTime.parse(json['event_date'] as String),
+      time: json['event_time'] as String,
+      attendanceCount: json['attendance_count'] as int,
+      budget: (json['budget'] as num).toInt(),
+      invitedCount: json['invited_count'] as int,
+      giftsCount: json['gifts_count'] as int,
+      totalGiftAmount: (json['total_gift_amount'] as num).toDouble(),
+      averageGiftValue: (json['average_gift_value'] as num).toDouble(),
+    );
+  }
 }

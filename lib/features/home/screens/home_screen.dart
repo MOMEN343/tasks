@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
+import 'package:tasks/features/home/data/profile_service.dart';
 import 'package:tasks/features/home/data/user_data.dart';
 import 'package:tasks/features/home/screens/add_event.dart';
 import 'package:tasks/features/home/widgets/current_events.dart';
@@ -20,12 +21,49 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreen extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   TabController? tabController;
+  String? userName;
+  bool isLoading = true;
+  int eventsRefreshKey = 0;
 
   @override
   void initState() {
     super.initState();
 
     tabController = TabController(length: 2, vsync: this);
+    loadingProfile();
+  }
+
+  Future<void> loadingProfile() async {
+    try {
+      final profile = await ProfileService().getCurrentProfile();
+
+      if (!mounted) return;
+
+      setState(() {
+        userName = profile?['name'] as String?;
+        isLoading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    tabController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -33,11 +71,22 @@ class _HomeScreen extends State<HomeScreen>
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(
-            context,
-          ).push(MaterialPageRoute(builder: (context) => AddEvent()));
+        onPressed: () async {
+          final eventAdded = await Navigator.of(context).push<bool>(
+            MaterialPageRoute(builder: (context) => const AddEvent()),
+          );
+
+          if (eventAdded == true && mounted) {
+            setState(() {
+              eventsRefreshKey++;
+            });
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('تمت إضافة المناسبة بنجاح')),
+            );
+          }
         },
+
         backgroundColor: ManagerColors.secondary,
 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -109,7 +158,9 @@ class _HomeScreen extends State<HomeScreen>
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           Text(
-                                            user.name,
+                                            isLoading
+                                                ? "جاري التحميل .."
+                                                : userName ?? "الاسم غير موجود",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontFamily:
@@ -191,7 +242,10 @@ class _HomeScreen extends State<HomeScreen>
                   Expanded(
                     child: TabBarView(
                       controller: tabController,
-                      children: [CurrentEvents(), PreviousEvents()],
+                      children: [
+                        CurrentEvents(refreshKey: eventsRefreshKey),
+                        PreviousEvents(),
+                      ],
                     ),
                   ),
                 ],
