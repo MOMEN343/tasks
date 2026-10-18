@@ -5,6 +5,7 @@ import 'package:tasks/features/home/managers/manages_text_styles.dart';
 class TextFormFeildStyle extends StatelessWidget {
   final String hintText;
   final String? Function(String?)? validator;
+  final TextEditingController? controller;
 
   final double hight;
   final double width;
@@ -20,6 +21,7 @@ class TextFormFeildStyle extends StatelessWidget {
     this.hight = 44,
     this.maxLines = 1,
     this.suffixIcon,
+    this.controller,
   });
 
   @override
@@ -28,6 +30,7 @@ class TextFormFeildStyle extends StatelessWidget {
       width: width,
       height: hight,
       child: TextFormField(
+        controller: controller,
         validator: validator,
         maxLines: maxLines,
         decoration: InputDecoration(

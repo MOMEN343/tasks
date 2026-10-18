@@ -237,8 +237,6 @@ class ManagerStrings {
 
   static const String showDetails = 'عرض التفاصيل';
 
-  static String weddingParty(String name) => 'حفل زواج $name';
-
   // ==================== Current Events ====================
 
   static const String ahmedAndFatima = 'أحمد وفاطمة';

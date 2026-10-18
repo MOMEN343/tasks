@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
@@ -14,6 +15,7 @@ class EventCard extends StatelessWidget {
   final String name;
   final DateTime eventDate;
   final bool eventEnded;
+  final String address;
   final String time;
   final int attendanceCount;
   final int budget;
@@ -37,21 +39,23 @@ class EventCard extends StatelessWidget {
     required this.giftsCount,
     required this.totalGiftAmount,
     required this.averageGiftValue,
+    required this.address,
   });
 
   @override
   Widget build(BuildContext context) {
+    final formatter = intl.NumberFormat.compact();
     return Card(
       color: Colors.white,
 
       child: Column(
-        spacing: 10,
+        spacing: 0,
         children: [
           Stack(
             children: [
               ClipRRect(
                 borderRadius: BorderRadiusGeometry.circular(15),
-                child: Image.asset("assets/images/$image"),
+                child: Image.network(image),
               ),
               Positioned(
                 top: 12,
@@ -112,15 +116,12 @@ class EventCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: Column(
-              spacing: 10,
+              spacing: 0,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      ManagerStrings.weddingParty(name),
-                      style: ManagerTextStyles.cardTitle,
-                    ),
+                    Text(name, style: ManagerTextStyles.cardTitle),
                     Row(
                       children: [
                         Icon(
@@ -129,10 +130,7 @@ class EventCard extends StatelessWidget {
                           color: ManagerColors.primary,
                         ),
 
-                        Text(
-                          event1.address,
-                          style: ManagerTextStyles.subCardTitle,
-                        ),
+                        Text(address, style: ManagerTextStyles.subCardTitle),
                       ],
                     ),
                   ],
@@ -145,61 +143,81 @@ class EventCard extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Row(
+                        spacing: 5,
                         children: [
                           Expanded(
-                            child: Column(
-                              spacing: 4,
-                              children: [
-                                Icon(Icons.people_alt_outlined, size: 24),
-                                Text(
-                                  attendanceCount.toString(),
-                                  style: TextStyle(
-                                    fontSize: ManagerFontSize.larg,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.blue.withValues(alpha: 0.04),
+                              ),
+
+                              child: Column(
+                                children: [
+                                  Icon(Icons.people_alt_outlined, size: 24),
+                                  Text(
+                                    attendanceCount.toString(),
+                                    style: TextStyle(
+                                      fontSize: ManagerFontSize.larg,
+                                    ),
                                   ),
-                                ),
-                                Text(ManagerStrings.attendance),
-                              ],
+                                  Text(ManagerStrings.attendance),
+                                ],
+                              ),
                             ),
                           ),
 
                           Expanded(
-                            child: Column(
-                              spacing: 4,
-                              children: [
-                                Icon(
-                                  Icons.account_balance_wallet_outlined,
-                                  size: 24,
-                                ),
-                                Text(
-                                  budget.toString(),
-                                  style: TextStyle(
-                                    fontSize: ManagerFontSize.larg,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.blue.withValues(alpha: 0.04),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.account_balance_wallet_outlined,
+                                    size: 24,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                  child: SvgPicture.asset(
-                                    "assets/images/ryal.svg",
-                                    height: 18,
+                                  Text(
+                                    formatter.format(budget),
+                                    style: TextStyle(
+                                      fontSize: ManagerFontSize.larg,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: 30,
+                                    child: SvgPicture.asset(
+                                      "assets/images/ryal.svg",
+                                      height: 18,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
 
                           Expanded(
-                            child: Column(
-                              spacing: 4,
-                              children: [
-                                Icon(Icons.calendar_today_rounded, size: 24),
-                                Text(
-                                  invitedCount.toString(),
-                                  style: TextStyle(
-                                    fontSize: ManagerFontSize.larg,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.blue.withValues(alpha: 0.04),
+                              ),
+                              child: Column(
+                                children: [
+                                  Icon(Icons.calendar_today_rounded, size: 24),
+                                  Text(
+                                    invitedCount.toString(),
+                                    style: TextStyle(
+                                      fontSize: ManagerFontSize.larg,
+                                    ),
                                   ),
-                                ),
-                                Text(ManagerStrings.invited),
-                              ],
+                                  Text(ManagerStrings.invited),
+                                ],
+                              ),
                             ),
                           ),
                         ],

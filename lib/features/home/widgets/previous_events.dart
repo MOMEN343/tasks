@@ -1,9 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:tasks/features/home/data/event_data.dart';
+import 'package:tasks/features/home/data/events_service.dart';
+import 'package:tasks/features/home/models/event_model.dart';
 import 'package:tasks/features/home/widgets/event_card.dart';
 
-class PreviousEvents extends StatelessWidget {
+class PreviousEvents extends StatefulWidget {
   const PreviousEvents({super.key});
+
+  @override
+  State<PreviousEvents> createState() => _PreviousEvents();
+}
+
+class _PreviousEvents extends State<PreviousEvents> {
+  final today = DateUtils.dateOnly(DateTime.now());
+  List<EventModel> previousEvents = [];
+  bool isLoading = true;
+  String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    getPreviousEvents();
+  }
+
+  Future getPreviousEvents() async {
+    try {
+      final response = await EventsService().getEvents();
+
+      if (!mounted) return;
+      setState(() {
+        previousEvents = response;
+        previousEvents = previousEvents.where((event) {
+          return DateUtils.dateOnly(event.date).isBefore(today);
+        }).toList();
+        isLoading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      errorMessage = e.toString();
+      debugPrint(errorMessage);
+      isLoading = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,50 +52,29 @@ class PreviousEvents extends StatelessWidget {
         spacing: 10,
 
         children: [
-          EventCard(
-            image: event3.image,
-            name: event3.title,
-            eventDate: event3.date,
-            eventEnded: true,
-            time: event3.time,
-            attendanceCount: event3.attendanceCount,
-            budget: event3.budget,
-            invitedCount: event3.invitedCount,
-            giftsCount: event3.giftsCount,
-            totalGiftAmount: event3.totalGiftAmount,
-            averageGiftValue: event3.averageGiftValue,
-          ),
-
-          EventCard(
-            image: event4.image,
-
-            name: event4.title,
-
-            eventDate: event4.date,
-
-            eventEnded: true,
-            time: event4.time,
-            attendanceCount: event4.attendanceCount,
-            budget: event4.budget,
-            invitedCount: event4.invitedCount,
-            giftsCount: event4.giftsCount,
-            totalGiftAmount: event4.totalGiftAmount,
-            averageGiftValue: event4.averageGiftValue,
-          ),
-
-          EventCard(
-            image: event3.image,
-            name: event3.title,
-            eventDate: event3.date,
-            eventEnded: true,
-            time: event3.time,
-            attendanceCount: event3.attendanceCount,
-            budget: event3.budget,
-            invitedCount: event3.invitedCount,
-            giftsCount: event3.giftsCount,
-            totalGiftAmount: event3.totalGiftAmount,
-            averageGiftValue: event3.averageGiftValue,
-          ),
+          if (isLoading)
+            Center(child: CircularProgressIndicator())
+          else if (errorMessage != null)
+            Text("Error: $errorMessage")
+          else if (previousEvents.isEmpty)
+            Text("لا توجد مناسبات سابقة ..")
+          else
+            ...previousEvents.map(
+              (event) => EventCard(
+                eventEnded: true,
+                image: event.image,
+                name: event.title,
+                eventDate: event.date,
+                time: event.time,
+                attendanceCount: event.attendanceCount,
+                budget: event.budget,
+                invitedCount: event.invitedCount,
+                giftsCount: event.giftsCount,
+                totalGiftAmount: event.totalGiftAmount,
+                averageGiftValue: event.averageGiftValue,
+                address: event.address,
+              ),
+            ),
         ],
       ),
     );

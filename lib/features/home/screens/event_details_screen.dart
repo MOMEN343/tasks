@@ -68,7 +68,7 @@ class _EventDetailsScreen extends State<EventDetailsScreen>
                 clipBehavior: Clip.none,
                 children: [
                   TopPart(
-                    title: ManagerStrings.weddingParty(widget.title),
+                    title: widget.title,
                     subTitle:
                         "${ManagerDate.formatDate(widget.date)} - ${widget.time}",
                     height: 129,

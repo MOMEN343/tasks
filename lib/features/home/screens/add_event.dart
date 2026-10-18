@@ -7,6 +7,9 @@ import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
 import 'package:tasks/features/home/widgets/count_container.dart';
 import 'package:tasks/features/home/widgets/text_form_feild.dart';
+import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({super.key});
@@ -18,8 +21,16 @@ class AddEvent extends StatefulWidget {
 class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
   TabController? tabController;
   int count = 0;
-  // Color tabBar2Color = Colors.white.withValues(alpha: 0.4);
   GlobalKey<FormState> formkey = GlobalKey();
+  final ImagePicker picker = ImagePicker();
+  XFile? selectedImage;
+  Uint8List? selectedImageBytes;
+  String? uploadedImageUrl;
+
+  final titleController = TextEditingController();
+  final dateController = TextEditingController();
+  final timeController = TextEditingController();
+  final addressController = TextEditingController();
 
   @override
   void initState() {
@@ -28,9 +39,53 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
     tabController = TabController(length: 2, vsync: this);
   }
 
+  Future<void> pickImage() async {
+    final image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image == null) return;
+
+    final bytes = await image.readAsBytes();
+
+    setState(() {
+      selectedImage = image;
+      selectedImageBytes = bytes;
+    });
+  }
+
+  Future<String> uploadSelectedImage() async {
+    if (selectedImageBytes == null || selectedImage == null) {
+      throw Exception('يرجى اختيار صورة أولاً');
+    }
+
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser;
+
+    if (user == null) {
+      throw Exception('يجب تسجيل الدخول أولاً');
+    }
+
+    final extension = selectedImage!.name.split('.').last;
+    final filePath =
+        '${user.id}/${DateTime.now().millisecondsSinceEpoch}.$extension';
+
+    await supabase.storage
+        .from('event-images')
+        .uploadBinary(
+          filePath,
+          selectedImageBytes!,
+          fileOptions: FileOptions(contentType: selectedImage!.mimeType),
+        );
+
+    return supabase.storage.from('event-images').getPublicUrl(filePath);
+  }
+
   @override
   void dispose() {
     tabController!.dispose();
+    titleController.dispose();
+    dateController.dispose();
+    timeController.dispose();
+    addressController.dispose();
     super.dispose();
   }
 
@@ -182,43 +237,66 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                       dashPattern: [8, 5],
                                       radius: Radius.circular(12),
                                     ),
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 119,
-                                      decoration: BoxDecoration(),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: 42,
-                                            height: 42,
-                                            decoration: BoxDecoration(
-                                              color: ManagerColors.secondary
-                                                  .withValues(alpha: 0.1),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Icon(
-                                              Icons.file_upload_outlined,
-                                              color: ManagerColors.secondary,
-                                            ),
-                                          ),
-                                          Text(
-                                            ManagerStrings.uploadImage,
-                                            style: ManagerTextStyles
-                                                .subCardTitle
-                                                .copyWith(
-                                                  fontSize:
-                                                      ManagerFontSize.small,
+                                    child: InkWell(
+                                      onTap: () {
+                                        pickImage();
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 119,
+                                        decoration: BoxDecoration(),
+                                        child: selectedImageBytes != null
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: Image.memory(
+                                                  selectedImageBytes!,
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
                                                 ),
-                                          ),
-                                          Text(
-                                            ManagerStrings.imageFormats,
-                                            style:
-                                                ManagerTextStyles.subCardTitle,
-                                          ),
-                                        ],
+                                              )
+                                            : Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 42,
+                                                    height: 42,
+                                                    decoration: BoxDecoration(
+                                                      color: ManagerColors
+                                                          .secondary
+                                                          .withValues(
+                                                            alpha: 0.1,
+                                                          ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                    ),
+                                                    child: Icon(
+                                                      Icons
+                                                          .file_upload_outlined,
+                                                      color: ManagerColors
+                                                          .secondary,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    ManagerStrings.uploadImage,
+                                                    style: ManagerTextStyles
+                                                        .subCardTitle
+                                                        .copyWith(
+                                                          fontSize:
+                                                              ManagerFontSize
+                                                                  .small,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    ManagerStrings.imageFormats,
+                                                    style: ManagerTextStyles
+                                                        .subCardTitle,
+                                                  ),
+                                                ],
+                                              ),
                                       ),
                                     ),
                                   ),
@@ -540,6 +618,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                     textButton: ManagerStrings.next,
                     onPressed: () {
                       tabController!.animateTo(1);
+
                       // setState(() {
                       //   tabBar2Color = Colors.white;
                       // });
@@ -587,6 +666,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                       style: ManagerTextStyles.label,
                                     ),
                                     TextFormFeildStyle(
+                                      controller: titleController,
                                       validator: (v) {
                                         return null;
                                       },
@@ -609,6 +689,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             style: ManagerTextStyles.label,
                                           ),
                                           TextFormFeildStyle(
+                                            controller: dateController,
                                             hintText: ManagerStrings.dateHint,
                                             validator: (v) {
                                               return null;
@@ -641,6 +722,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             style: ManagerTextStyles.label,
                                           ),
                                           TextFormFeildStyle(
+                                            controller: timeController,
                                             validator: (v) {
                                               return null;
                                             },
@@ -674,6 +756,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                       style: ManagerTextStyles.label,
                                     ),
                                     TextFormFeildStyle(
+                                      controller: addressController,
                                       validator: (v) {
                                         return null;
                                       },
@@ -694,7 +777,48 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                   ),
                   LoginButton(
                     textButton: ManagerStrings.confirmAddition,
-                    onPressed: () {},
+
+                    onPressed: () async {
+                      try {
+                        final imageUrl = await uploadSelectedImage();
+
+                        final supabase = Supabase.instance.client;
+                        final user = supabase.auth.currentUser;
+
+                        if (user == null) {
+                          throw Exception('يجب تسجيل الدخول أولاً');
+                        }
+
+                        await supabase.from('events').insert({
+                          'title': titleController.text.trim(),
+                          'image_url': imageUrl,
+                          'address': addressController.text.trim(),
+                          'event_date': DateTime(
+                            int.parse(dateController.text.trim().split('-')[2]),
+                            int.parse(dateController.text.trim().split('-')[1]),
+                            int.parse(dateController.text.trim().split('-')[0]),
+                          ).toIso8601String().split('T')[0],
+                          'event_time': timeController.text.trim(),
+                          'attendance_count': 0,
+                          'budget': 0,
+                          'invited_count': count,
+                          'gifts_count': 0,
+                          'total_gift_amount': 0.0,
+                          'average_gift_value': 0.0,
+                          'user_id': user.id,
+                        });
+
+                        if (!mounted) return;
+
+                        Navigator.of(context).pop(true);
+                      } catch (e) {
+                        if (!mounted) return;
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('فشلت إضافة المناسبة: $e')),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
