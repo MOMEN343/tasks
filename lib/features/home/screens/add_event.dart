@@ -79,6 +79,35 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
     return supabase.storage.from('event-images').getPublicUrl(filePath);
   }
 
+  Future<void> pickEventDate() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateUtils.dateOnly(DateTime.now()),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate == null) return;
+
+    dateController.text =
+        '${pickedDate.day.toString().padLeft(2, '0')}-'
+        '${pickedDate.month.toString().padLeft(2, '0')}-'
+        '${pickedDate.year}';
+  }
+
+  Future<void> pickEventTime() async {
+    final pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (pickedTime == null) return;
+
+    timeController.text =
+        '${pickedTime.hour.toString().padLeft(2, '0')}:'
+        '${pickedTime.minute.toString().padLeft(2, '0')}';
+  }
+
   @override
   void dispose() {
     tabController!.dispose();
@@ -691,16 +720,39 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                           TextFormFeildStyle(
                                             controller: dateController,
                                             hintText: ManagerStrings.dateHint,
-                                            validator: (v) {
+
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'يرجى اختيار تاريخ المناسبة';
+                                              }
+
+                                              final parts = value.split('-');
+                                              final selectedDate = DateTime(
+                                                int.parse(parts[2]),
+                                                int.parse(parts[1]),
+                                                int.parse(parts[0]),
+                                              );
+
+                                              if (selectedDate.isBefore(
+                                                DateUtils.dateOnly(
+                                                  DateTime.now(),
+                                                ),
+                                              )) {
+                                                return 'لا يمكن اختيار تاريخ سابق لليوم';
+                                              }
+
                                               return null;
                                             },
+
                                             width:
                                                 (MediaQuery.of(
                                                   context,
                                                 ).size.width) /
                                                 2,
                                             suffixIcon: IconButton(
-                                              onPressed: () {},
+                                              onPressed: pickEventDate,
+
                                               icon: Icon(
                                                 Icons.calendar_today_outlined,
                                                 color: ManagerColors.primary,
@@ -723,9 +775,16 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                           ),
                                           TextFormFeildStyle(
                                             controller: timeController,
-                                            validator: (v) {
+
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'يرجى اختيار وقت المناسبة';
+                                              }
+
                                               return null;
                                             },
+
                                             hintText: ManagerStrings
                                                 .eventStartTimeHint,
                                             width:
@@ -734,7 +793,8 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                                 ).size.width) /
                                                 2,
                                             suffixIcon: IconButton(
-                                              onPressed: () {},
+                                              onPressed: pickEventTime,
+
                                               icon: Icon(
                                                 Icons.access_time_rounded,
                                                 color: ManagerColors.primary,
@@ -779,6 +839,9 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                     textButton: ManagerStrings.confirmAddition,
 
                     onPressed: () async {
+                      if (!formkey.currentState!.validate()) {
+                        return;
+                      }
                       try {
                         final imageUrl = await uploadSelectedImage();
 
