@@ -8,13 +8,13 @@ import 'package:tasks/features/home/data/user_data.dart';
 import 'package:tasks/features/wallet/data/balance.dart';
 import 'package:tasks/features/wallet/managers/wallet_font_size_manager.dart';
 import 'package:tasks/features/wallet/managers/wallet_manager_styles.dart';
+import 'package:tasks/features/wallet/screens/add_bank_account.dart';
 import 'package:tasks/features/wallet/widgets/confirm_dialog.dart';
 import 'package:tasks/features/wallet/widgets/ryal_image.dart';
 import 'package:tasks/features/wallet/widgets/top_part.dart';
 
 class NewWithdrawalScreen extends StatelessWidget {
   final formatter = intl.NumberFormat('#,###');
-  final double maxLimit = 22000;
   final GlobalKey<FormState> formKey = GlobalKey();
 
   NewWithdrawalScreen({super.key});
@@ -108,6 +108,7 @@ class NewWithdrawalScreen extends StatelessWidget {
                               ),
 
                               TextFormField(
+                                keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return "لا يمكن أن يكون الحقل فارغ";
@@ -117,10 +118,11 @@ class NewWithdrawalScreen extends StatelessWidget {
 
                                   if (amount == null) {
                                     return "يرجى إدخال رقم صحيح";
-                                  }
-
-                                  if (amount > maxLimit) {
-                                    return "لقد تجاوزت الحد الأقصى";
+                                  } else if (amount <= 0) {
+                                    return "يجب أن يكون المبلغ أكبر من صفر";
+                                  } else if (amount >
+                                      wallet.withdrawableBalance) {
+                                    return "المبلغ أكبر من الرصيد القابل للسحب";
                                   }
 
                                   return null;
@@ -135,7 +137,7 @@ class NewWithdrawalScreen extends StatelessWidget {
                                 spacing: 3,
                                 children: [
                                   Text(
-                                    "${ManagerStrings.maximumLimit} ${formatter.format(maxLimit)}",
+                                    "${ManagerStrings.maximumLimit} ${formatter.format(wallet.withdrawableBalance)}",
                                     style: TextStyle(
                                       fontSize: WalletFontSizeManager.smaller,
                                       color: ManagerColors.grey,
@@ -196,21 +198,32 @@ class NewWithdrawalScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                spacing: 3,
-                                children: [
-                                  Text(user.bankName!),
-
-                                  Text(maskBankAccount(user.bankAccount!)),
-                                ],
-                              ),
-
+                              if (user.bankName != null &&
+                                  user.bankAccount != null)
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  spacing: 3,
+                                  children: [
+                                    Text(user.bankName!),
+                                    Text(maskBankAccount(user.bankAccount!)),
+                                  ],
+                                )
+                              else
+                                const Text("لم يتم اختيار حساب بنكي"),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => AddBankAccount(),
+                                    ),
+                                  );
+                                },
                                 child: Text(
-                                  ManagerStrings.changeBankAccount,
-                                  style: TextStyle(
+                                  user.bankName != null &&
+                                          user.bankAccount != null
+                                      ? ManagerStrings.changeBankAccount
+                                      : "أضف حساب بنكي",
+                                  style: const TextStyle(
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),

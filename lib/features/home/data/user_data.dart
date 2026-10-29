@@ -5,6 +5,6 @@ import 'package:tasks/core/models/user_model.dart';
 final UserModel user = UserModel(
   name: ManagerStrings.userName,
   image: ManagerImages.user1,
-  bankAccount: "SA1234567890123456781234",
-  bankName: "الراجحي",
+  bankAccount: null,
+  bankName: null,
 );

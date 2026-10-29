@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:shimmer/shimmer.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
@@ -11,7 +12,7 @@ import 'package:tasks/features/home/managers/manages_text_styles.dart';
 import 'package:tasks/features/home/screens/event_details_screen.dart';
 
 class EventCard extends StatelessWidget {
-  final String image;
+  final String? image;
   final String name;
   final DateTime eventDate;
   final bool eventEnded;
@@ -55,7 +56,28 @@ class EventCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadiusGeometry.circular(15),
-                child: Image.network(image),
+                child: image != null && image!.isNotEmpty
+                    ? Image.network(
+                        image!,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              width: double.infinity,
+                              height: 180,
+                              color: Colors.white,
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.image_not_supported);
+                        },
+                      )
+                    : const Icon(Icons.image_not_supported),
               ),
               Positioned(
                 top: 12,

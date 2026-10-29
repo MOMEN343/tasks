@@ -26,7 +26,9 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
   XFile? selectedImage;
   Uint8List? selectedImageBytes;
   String? uploadedImageUrl;
-
+  String? uploadedImagePath;
+  DateTime? selectedEventDate;
+  bool isLoading = false;
   final titleController = TextEditingController();
   final dateController = TextEditingController();
   final timeController = TextEditingController();
@@ -67,7 +69,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
     final extension = selectedImage!.name.split('.').last;
     final filePath =
         '${user.id}/${DateTime.now().millisecondsSinceEpoch}.$extension';
-
+    uploadedImagePath = filePath;
     await supabase.storage
         .from('event-images')
         .uploadBinary(
@@ -89,10 +91,13 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
 
     if (pickedDate == null) return;
 
-    dateController.text =
-        '${pickedDate.day.toString().padLeft(2, '0')}-'
-        '${pickedDate.month.toString().padLeft(2, '0')}-'
-        '${pickedDate.year}';
+    setState(() {
+      selectedEventDate = pickedDate;
+      dateController.text =
+          '${pickedDate.day.toString().padLeft(2, '0')}-'
+          '${pickedDate.month.toString().padLeft(2, '0')}-'
+          '${pickedDate.year}';
+    });
   }
 
   Future<void> pickEventTime() async {
@@ -110,7 +115,7 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    tabController!.dispose();
+    tabController?.dispose();
     titleController.dispose();
     dateController.dispose();
     timeController.dispose();
@@ -696,7 +701,20 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                     ),
                                     TextFormFeildStyle(
                                       controller: titleController,
-                                      validator: (v) {
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.trim().isEmpty) {
+                                          return 'يرجى إدخال عنوان المناسبة';
+                                        }
+
+                                        if (value.trim().length < 3) {
+                                          return 'يجب ألا يقل عنوان المناسبة عن 3 أحرف';
+                                        }
+
+                                        if (value.trim().length > 50) {
+                                          return 'يجب ألا يزيد عنوان المناسبة عن 50 حرفًا';
+                                        }
+
                                         return null;
                                       },
                                       hintText: ManagerStrings.eventNameHint,
@@ -722,19 +740,11 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                             hintText: ManagerStrings.dateHint,
 
                                             validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
+                                              if (selectedEventDate == null) {
                                                 return 'يرجى اختيار تاريخ المناسبة';
                                               }
 
-                                              final parts = value.split('-');
-                                              final selectedDate = DateTime(
-                                                int.parse(parts[2]),
-                                                int.parse(parts[1]),
-                                                int.parse(parts[0]),
-                                              );
-
-                                              if (selectedDate.isBefore(
+                                              if (selectedEventDate!.isBefore(
                                                 DateUtils.dateOnly(
                                                   DateTime.now(),
                                                 ),
@@ -744,7 +754,6 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
 
                                               return null;
                                             },
-
                                             width:
                                                 (MediaQuery.of(
                                                   context,
@@ -837,11 +846,15 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                   ),
                   LoginButton(
                     textButton: ManagerStrings.confirmAddition,
-
+                    isLoading: isLoading,
                     onPressed: () async {
+                      if (isLoading) return;
                       if (!formkey.currentState!.validate()) {
                         return;
                       }
+                      setState(() {
+                        isLoading = true;
+                      });
                       try {
                         final imageUrl = await uploadSelectedImage();
 
@@ -851,35 +864,52 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                         if (user == null) {
                           throw Exception('يجب تسجيل الدخول أولاً');
                         }
+                        try {
+                          await supabase.from('events').insert({
+                            'title': titleController.text.trim(),
+                            'image_url': imageUrl,
+                            'address': addressController.text.trim(),
+                            'event_date': selectedEventDate!
+                                .toIso8601String()
+                                .split('T')[0],
+                            'event_time': timeController.text.trim(),
+                            'attendance_count': 0,
+                            'budget': 0,
+                            'invited_count': count,
+                            'gifts_count': 0,
+                            'total_gift_amount': 0.0,
+                            'average_gift_value': 0.0,
+                            'user_id': user.id,
+                          });
+                        } catch (e) {
+                          if (uploadedImagePath != null) {
+                            try {
+                              await Supabase.instance.client.storage
+                                  .from('event-images')
+                                  .remove([uploadedImagePath!]);
+                              uploadedImagePath = null;
+                            } catch (deleteError) {
+                              debugPrint('فشل حذف الصورة: $deleteError');
+                            }
+                          }
 
-                        await supabase.from('events').insert({
-                          'title': titleController.text.trim(),
-                          'image_url': imageUrl,
-                          'address': addressController.text.trim(),
-                          'event_date': DateTime(
-                            int.parse(dateController.text.trim().split('-')[2]),
-                            int.parse(dateController.text.trim().split('-')[1]),
-                            int.parse(dateController.text.trim().split('-')[0]),
-                          ).toIso8601String().split('T')[0],
-                          'event_time': timeController.text.trim(),
-                          'attendance_count': 0,
-                          'budget': 0,
-                          'invited_count': count,
-                          'gifts_count': 0,
-                          'total_gift_amount': 0.0,
-                          'average_gift_value': 0.0,
-                          'user_id': user.id,
-                        });
-
+                          rethrow;
+                        }
+                        uploadedImagePath = null;
                         if (!mounted) return;
 
                         Navigator.of(context).pop(true);
                       } catch (e) {
                         if (!mounted) return;
-
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('فشلت إضافة المناسبة: $e')),
                         );
+                      } finally {
+                        if (mounted) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        }
                       }
                     },
                   ),

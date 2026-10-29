@@ -7,6 +7,7 @@ import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/verification_screen.dart';
 import 'package:tasks/core/widgets/login_button.dart';
+import 'package:tasks/features/authentication/utils/auth_error_helper.dart';
 import 'package:tasks/features/authentication/widgets/phone_feild.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -133,24 +134,8 @@ class _ResetPassword extends State<ResetPassword> {
                                     );
                                   } on AuthApiException catch (e) {
                                     if (!mounted) return;
-                                    final message =
-                                        e.message.contains(
-                                          'Signups not allowed for otp',
-                                        )
-                                        ? 'رقم الهاتف غير مسجل لدينا'
-                                        : e.message;
-
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          message,
-                                          textDirection: TextDirection.rtl,
-                                        ),
-                                        backgroundColor: Colors.red,
-                                        behavior: SnackBarBehavior.floating,
-                                        duration: Duration(seconds: 3),
-                                      ),
-                                    );
+                                    showAuthError(context, e);
+                                    debugPrint(e.code);
                                   } finally {
                                     if (mounted) {
                                       setState(() {

@@ -16,7 +16,7 @@ class EventDetailsScreen extends StatefulWidget {
   final int budget;
   final int invitedCount;
   final int giftsCount;
-  final String image;
+  final String? image;
   final double totalGiftAmount;
   final double averageGiftValue;
 
@@ -123,7 +123,15 @@ class _EventDetailsScreen extends State<EventDetailsScreen>
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.asset("assets/images/${widget.image}"),
+                        child: widget.image != null && widget.image!.isNotEmpty
+                            ? Image.network(
+                                widget.image!,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(Icons.image_not_supported);
+                                },
+                              )
+                            : const Icon(Icons.image_not_supported),
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
