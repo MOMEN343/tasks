@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pinput/pinput.dart';
@@ -10,6 +12,8 @@ import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/new_password_screen.dart';
 import 'package:tasks/core/widgets/login_button.dart';
+import 'package:tasks/features/authentication/utils/auth_error_helper.dart';
+import 'package:tasks/features/authentication/utils/phone_utils.dart';
 
 class VerificationScreen extends StatefulWidget {
   final String phoneNumber;
@@ -22,6 +26,7 @@ class VerificationScreen extends StatefulWidget {
 
 class _VerificationScreen extends State<VerificationScreen> {
   String otpCode = '';
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -41,152 +46,166 @@ class _VerificationScreen extends State<VerificationScreen> {
                   ),
                 ),
 
-                Padding(
-                  padding: EdgeInsetsGeometry.symmetric(horizontal: 24),
+                SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.only(top: 170),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          Column(
-                            spacing: 10,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                ManagerStrings.enterVerificationCode,
-                                style: ManagerStyles.title,
-                              ),
-
-                              Text(
-                                ManagerStrings.verificationMessage(
-                                  maskPhoneNumber(widget.phoneNumber),
+                    padding: EdgeInsetsGeometry.symmetric(horizontal: 24),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 130),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          children: [
+                            Column(
+                              spacing: 10,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  ManagerStrings.enterVerificationCode,
+                                  style: ManagerStyles.title,
                                 ),
-                                style: ManagerStyles.subTitle.copyWith(
-                                  fontSize: ManagerFontSize.medium,
-                                  height: 1.6,
-                                ),
-                              ),
 
-                              Padding(
-                                padding: const EdgeInsets.only(top: 80),
-                                child: Column(
-                                  spacing: 20,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          ManagerStrings.verificationCode,
-                                          style: ManagerStyles.title.copyWith(
-                                            fontSize: ManagerFontSize.medium,
+                                Text(
+                                  ManagerStrings.verificationMessage(
+                                    maskPhoneNumber(widget.phoneNumber),
+                                  ),
+                                  style: ManagerStyles.subTitle.copyWith(
+                                    fontSize: ManagerFontSize.medium,
+                                    height: 1.6,
+                                  ),
+                                ),
+
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 80),
+                                  child: Column(
+                                    spacing: 20,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            ManagerStrings.verificationCode,
+                                            style: ManagerStyles.title.copyWith(
+                                              fontSize: ManagerFontSize.medium,
+                                            ),
+                                          ),
+
+                                          TextButton(
+                                            onPressed: () {},
+                                            child: Text(
+                                              ManagerStrings.resendCode,
+                                              style: ManagerStyles.subTitle
+                                                  .copyWith(
+                                                    fontSize:
+                                                        ManagerFontSize.medium,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      Pinput(
+                                        length: 6,
+                                        keyboardType: TextInputType.number,
+                                        onCompleted: (value) {
+                                          otpCode = value;
+                                        },
+                                        focusedPinTheme: PinTheme(
+                                          width: 49,
+                                          height: 56,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: ManagerColors.primary,
+                                              width: 1.5,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
                                           ),
                                         ),
-
-                                        TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            ManagerStrings.resendCode,
-                                            style: ManagerStyles.subTitle
-                                                .copyWith(
-                                                  fontSize:
-                                                      ManagerFontSize.medium,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-
-                                    Pinput(
-                                      length: 6,
-                                      keyboardType: TextInputType.number,
-                                      onCompleted: (value) {
-                                        otpCode = value;
-                                      },
-                                      focusedPinTheme: PinTheme(
-                                        width: 49,
-                                        height: 56,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: ManagerColors.primary,
-                                            width: 1.5,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            10,
+                                        defaultPinTheme: PinTheme(
+                                          width: 49,
+                                          height: 56,
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            border: Border.all(
+                                              color: ManagerColors.lightGrey,
+                                              width: 1,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                      defaultPinTheme: PinTheme(
-                                        width: 49,
-                                        height: 56,
-                                        decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                          border: Border.all(
-                                            color: ManagerColors.lightGrey,
-                                            width: 1,
+
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            ManagerStrings.resetCodeSentIn,
+                                            style: ManagerStyles.subTitle,
                                           ),
-                                          borderRadius: BorderRadius.circular(
-                                            10,
+
+                                          Text(
+                                            "03:05",
+                                            style: ManagerStyles.subTitle,
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ),
-
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          ManagerStrings.resetCodeSentIn,
-                                          style: ManagerStyles.subTitle,
-                                        ),
-
-                                        Text(
-                                          "03:05",
-                                          style: ManagerStyles.subTitle,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
 
-                              Padding(
-                                padding: EdgeInsetsGeometry.only(top: 74),
-                                child: LoginButton(
-                                  textButton: ManagerStrings.next,
-                                  onPressed: () async {
-                                    if (otpCode.length != 6) {
-                                      return;
-                                    }
-                                    try {
-                                      await Supabase.instance.client.auth
-                                          .verifyOTP(
-                                            phone: widget.phoneNumber,
-                                            token: otpCode,
-                                            type: OtpType.sms,
-                                          );
-
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              NewPasswordScreen(),
-                                        ),
-                                      );
-                                    } on AuthException catch (e) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        SnackBar(content: Text(e.message)),
-                                      );
-                                    }
-                                  },
+                                Padding(
+                                  padding: EdgeInsetsGeometry.only(
+                                    top: 74,
+                                    bottom: 10,
+                                  ),
+                                  child: LoginButton(
+                                    textButton: ManagerStrings.next,
+                                    isLoading: isLoading,
+                                    onPressed: () async {
+                                      if (isLoading) return;
+                                      if (otpCode.length != 6) {
+                                        return;
+                                      }
+                                      try {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
+                                        await Supabase.instance.client.auth
+                                            .verifyOTP(
+                                              phone: widget.phoneNumber,
+                                              token: otpCode,
+                                              type: OtpType.sms,
+                                            );
+                                        if (!mounted) return;
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                NewPasswordScreen(),
+                                          ),
+                                        );
+                                      } on AuthException catch (e) {
+                                        if (!mounted) return;
+                                        showAuthError(context, e);
+                                        debugPrint(e.code);
+                                      } finally {
+                                        if (mounted) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                        }
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -198,12 +217,4 @@ class _VerificationScreen extends State<VerificationScreen> {
       ),
     );
   }
-}
-
-String maskPhoneNumber(String phoneNumber) {
-  if (phoneNumber.length < 11) {
-    return phoneNumber;
-  }
-
-  return '${phoneNumber.substring(0, 4)}****${phoneNumber.substring(10)}';
 }

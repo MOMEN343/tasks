@@ -1,15 +1,23 @@
+import 'dart:typed_data';
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
+import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/home/data/profile_service.dart';
 import 'package:tasks/features/home/data/user_data.dart';
+import 'package:tasks/features/home/managers/manages_text_styles.dart';
 import 'package:tasks/features/home/screens/add_event.dart';
 import 'package:tasks/features/home/widgets/current_events.dart';
 import 'package:tasks/features/home/widgets/icon_container.dart';
 import 'package:tasks/features/home/widgets/previous_events.dart';
+import 'package:tasks/features/wallet/screens/new_withdrawal_screen.dart';
+import 'package:tasks/features/wallet/screens/wallet_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +32,9 @@ class _HomeScreen extends State<HomeScreen>
   String? userName;
   bool isLoading = true;
   int eventsRefreshKey = 0;
+  XFile? selectedImage;
+  Uint8List? selectedImageBytes;
+  final ImagePicker picker = ImagePicker();
 
   @override
   void initState() {
@@ -31,6 +42,23 @@ class _HomeScreen extends State<HomeScreen>
 
     tabController = TabController(length: 2, vsync: this);
     loadingProfile();
+  }
+
+  Future<void> pickImage() async {
+    final image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+      maxWidth: 1200,
+    );
+
+    if (image == null) return;
+
+    final bytes = await image.readAsBytes();
+
+    setState(() {
+      selectedImage = image;
+      selectedImageBytes = bytes;
+    });
   }
 
   Future<void> loadingProfile() async {
@@ -191,6 +219,13 @@ class _HomeScreen extends State<HomeScreen>
                                   ),
 
                                   InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => WalletScreen(),
+                                        ),
+                                      );
+                                    },
                                     child: IconContainer(
                                       icon:
                                           Icons.account_balance_wallet_outlined,

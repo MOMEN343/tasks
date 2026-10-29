@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:tasks/features/home/data/event_data.dart';
 import 'package:tasks/features/home/data/events_service.dart';
 import 'package:tasks/features/home/models/event_model.dart';
@@ -68,7 +69,15 @@ class _CurrentEvents extends State<CurrentEvents> {
 
         children: [
           if (isLoading)
-            const Center(child: CircularProgressIndicator())
+            Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                width: double.infinity,
+                height: 180,
+                color: Colors.white,
+              ),
+            )
           else if (errorMessage != null)
             Text('حدث خطأ: $errorMessage')
           else if (events.isEmpty)

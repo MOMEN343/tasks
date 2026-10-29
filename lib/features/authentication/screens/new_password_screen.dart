@@ -7,6 +7,7 @@ import 'package:tasks/features/authentication/managers/manager_font_size.dart';
 import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/password_changed_successfully.dart';
 import 'package:tasks/core/widgets/login_button.dart';
+import 'package:tasks/features/authentication/utils/auth_error_helper.dart';
 import 'package:tasks/features/authentication/widgets/password_field.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -21,6 +22,7 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController newPassword = TextEditingController();
   final TextEditingController confirmPassword = TextEditingController();
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -49,127 +51,150 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
               Padding(
                 padding: EdgeInsetsGeometry.symmetric(horizontal: 24),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 170),
+                  padding: const EdgeInsets.only(top: 100, bottom: 10),
                   child: SizedBox(
                     width: double.infinity,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          spacing: 70,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              spacing: 10,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  ManagerStrings.enterNewPassword,
-                                  textAlign: TextAlign.right,
-                                  textDirection: TextDirection.rtl,
-                                  style: ManagerStyles.title,
-                                ),
-
-                                Text(
-                                  ManagerStrings.completeFinalData,
-                                  textAlign: TextAlign.right,
-                                  textDirection: TextDirection.rtl,
-                                  style: ManagerStyles.subTitle,
-                                ),
-                              ],
-                            ),
-
-                            Column(
-                              children: [
-                                Form(
-                                  key: formKey,
-                                  child: Column(
-                                    spacing: 52,
+                        SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Column(
+                                spacing: 36,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    spacing: 10,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        spacing: 5,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ManagerStrings.password,
-                                            style: ManagerStyles.subTitle,
-                                          ),
-
-                                          PasswordField(
-                                            hintText: ManagerStrings.password,
-                                            controller: newPassword,
-                                            validator: (value) {
-                                              if (value!.length < 6) {
-                                                return ManagerStrings
-                                                    .passwordTooShort;
-                                              }
-                                              return null;
-                                            },
-                                          ),
-
-                                          Row(
-                                            spacing: 5,
-                                            children: [
-                                              Icon(
-                                                Icons.info_outline,
-                                                color: Colors.black,
-                                                size: 20,
-                                              ),
-
-                                              Text(
-                                                ManagerStrings
-                                                    .passwordRequirement,
-                                                style: ManagerStyles.subTitle
-                                                    .copyWith(
-                                                      fontSize:
-                                                          ManagerFontSize.small,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                      Text(
+                                        ManagerStrings.enterNewPassword,
+                                        textAlign: TextAlign.right,
+                                        textDirection: TextDirection.rtl,
+                                        style: ManagerStyles.title,
                                       ),
 
-                                      Column(
-                                        spacing: 5,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ManagerStrings.confirmNewPassword,
-                                            style: ManagerStyles.subTitle,
-                                          ),
-
-                                          PasswordField(
-                                            hintText:
-                                                ManagerStrings.confirmPassword,
-                                            validator: (value) {
-                                              if (value != newPassword.text) {
-                                                return 'كلمتا المرور غير متطابقتين';
-                                              }
-                                              return null;
-                                            },
-                                            controller: confirmPassword,
-                                          ),
-                                        ],
+                                      Text(
+                                        ManagerStrings.completeFinalData,
+                                        textAlign: TextAlign.right,
+                                        textDirection: TextDirection.rtl,
+                                        style: ManagerStyles.subTitle,
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+
+                                  Column(
+                                    children: [
+                                      Form(
+                                        key: formKey,
+                                        child: Column(
+                                          spacing: 28,
+                                          children: [
+                                            Column(
+                                              spacing: 5,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  ManagerStrings.password,
+                                                  style: ManagerStyles.subTitle,
+                                                ),
+
+                                                PasswordField(
+                                                  hintText:
+                                                      ManagerStrings.password,
+                                                  controller: newPassword,
+                                                  validator: (value) {
+                                                    if (value!.length < 6) {
+                                                      return ManagerStrings
+                                                          .passwordTooShort;
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  spacing: 2,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.info_outline,
+                                                      color: Colors.black,
+                                                      size: 18,
+                                                    ),
+                                                    Expanded(
+                                                      child: Text(
+                                                        ManagerStrings
+                                                            .passwordRequirement,
+                                                        style: ManagerStyles
+                                                            .subTitle
+                                                            .copyWith(
+                                                              fontSize:
+                                                                  ManagerFontSize
+                                                                      .small,
+                                                            ),
+                                                        softWrap: true,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+
+                                            Column(
+                                              spacing: 5,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  ManagerStrings
+                                                      .confirmNewPassword,
+                                                  style: ManagerStyles.subTitle,
+                                                ),
+
+                                                PasswordField(
+                                                  hintText: ManagerStrings
+                                                      .confirmPassword,
+                                                  validator: (value) {
+                                                    if (value !=
+                                                        newPassword.text) {
+                                                      return 'كلمتا المرور غير متطابقتين';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  controller: confirmPassword,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
 
                         LoginButton(
                           textButton: ManagerStrings.saveUpdate,
+                          isLoading: isLoading,
                           onPressed: () async {
                             try {
+                              if (isLoading) return;
                               if (formKey.currentState!.validate()) {
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 await Supabase.instance.client.auth.updateUser(
                                   UserAttributes(password: newPassword.text),
                                 );
+                                if (!mounted) return;
 
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
@@ -179,14 +204,15 @@ class _NewPasswordScreen extends State<NewPasswordScreen> {
                                 );
                               }
                             } on AuthException catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(e.toString()),
-                                  backgroundColor: Colors.red,
-                                  behavior: SnackBarBehavior.floating,
-                                  duration: Duration(seconds: 3),
-                                ),
-                              );
+                              if (!mounted) return;
+                              showAuthError(context, e);
+                              debugPrint(e.code);
+                            } finally {
+                              if (mounted) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
                             }
                           },
                         ),

@@ -224,6 +224,10 @@ class _NewAccount extends State<NewAccount> {
                                                 phone: phoneNumber,
                                                 password:
                                                     passwordController.text,
+                                                data: {
+                                                  'name': nameController.text
+                                                      .trim(),
+                                                },
                                               );
                                           debugPrint(
                                             'SignUp user: ${response.user?.id}',

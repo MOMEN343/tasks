@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -15,8 +17,6 @@ class AppStartScreen extends StatefulWidget {
 }
 
 class _AppStartScreenState extends State<AppStartScreen> {
-  Widget _nextScreen = const SplashScreen2();
-
   @override
   void initState() {
     super.initState();
@@ -25,8 +25,6 @@ class _AppStartScreenState extends State<AppStartScreen> {
   }
 
   Future<void> _determineFirstScreen() async {
-    await Future.delayed(Duration(seconds: 3));
-
     final preferences = await SharedPreferences.getInstance();
 
     final hasSeenOnboarding = preferences.getBool("hasSeenOnboarding") ?? false;
@@ -40,11 +38,18 @@ class _AppStartScreenState extends State<AppStartScreen> {
             .from("profiles")
             .select("id")
             .eq("id", Supabase.instance.client.auth.currentUser!.id)
-            .maybeSingle();
+            .maybeSingle()
+            .timeout(const Duration(seconds: 10));
 
         nextScreen = profile != null ? HomeScreen() : LoginScreen();
+      } on TimeoutException {
+        debugPrint("Profile request timed out");
+        nextScreen = LoginScreen();
+      } on PostgrestException catch (e) {
+        debugPrint("Profile database error: ${e.code}");
+        nextScreen = LoginScreen();
       } catch (e) {
-        debugPrint("Error: $e");
+        debugPrint("Profile request failed: $e");
         nextScreen = LoginScreen();
       }
     } else if (!hasSeenOnboarding) {
@@ -55,13 +60,13 @@ class _AppStartScreenState extends State<AppStartScreen> {
 
     if (!mounted) return;
 
-    setState(() {
-      _nextScreen = nextScreen;
-    });
+    Navigator.of(
+      context,
+    ).pushReplacement(MaterialPageRoute(builder: (context) => nextScreen));
   }
 
   @override
   Widget build(BuildContext context) {
-    return _nextScreen;
+    return const SplashScreen2();
   }
 }

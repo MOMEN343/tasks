@@ -10,6 +10,7 @@ import 'package:tasks/features/authentication/managers/manager_styles.dart';
 import 'package:tasks/features/authentication/screens/account_created_successfully.dart';
 import 'package:tasks/core/widgets/login_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tasks/features/authentication/utils/phone_utils.dart';
 
 class NewAccountVerification extends StatefulWidget {
   final String phoneNumber;
@@ -165,22 +166,13 @@ class _NewAccountVerification extends State<NewAccountVerification> {
                                     setState(() {
                                       isLoading = true;
                                     });
-                                    final response = await Supabase
-                                        .instance
-                                        .client
-                                        .auth
+
+                                    await Supabase.instance.client.auth
                                         .verifyOTP(
                                           phone: widget.phoneNumber,
                                           token: otpCode,
                                           type: OtpType.sms,
                                         );
-
-                                    await Supabase.instance.client
-                                        .from("profiles")
-                                        .insert({
-                                          'id': response.user!.id,
-                                          'name': widget.userName,
-                                        });
 
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
@@ -220,12 +212,4 @@ class _NewAccountVerification extends State<NewAccountVerification> {
       ),
     );
   }
-}
-
-String maskPhoneNumber(String phoneNumber) {
-  if (phoneNumber.length < 8) {
-    return phoneNumber;
-  }
-
-  return '${phoneNumber.substring(0, 4)}****${phoneNumber.substring(10)}';
 }
