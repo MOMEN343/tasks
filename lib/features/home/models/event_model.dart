@@ -28,19 +28,35 @@ class EventModel {
   });
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
+    final parsedDate = DateTime.tryParse(json['event_date']?.toString() ?? '');
+
+    if (parsedDate == null) {
+      throw const FormatException('تاريخ المناسبة غير صالح');
+    }
+
+    int parseInt(dynamic value) {
+      if (value is num) return value.toInt();
+      return int.tryParse(value?.toString() ?? '') ?? 0;
+    }
+
+    double parseDouble(dynamic value) {
+      if (value is num) return value.toDouble();
+      return double.tryParse(value?.toString() ?? '') ?? 0.0;
+    }
+
     return EventModel(
-      title: json['title'] as String? ?? '',
-      id: json['id'] as String?,
-      image: json['image_url'] as String?,
-      address: json['address'] as String? ?? '',
-      date: DateTime.parse(json['event_date'] as String),
-      time: json['event_time'] as String? ?? '',
-      attendanceCount: json['attendance_count'] as int,
-      budget: (json['budget'] as num).toInt(),
-      invitedCount: json['invited_count'] as int,
-      giftsCount: json['gifts_count'] as int,
-      totalGiftAmount: (json['total_gift_amount'] as num).toDouble(),
-      averageGiftValue: (json['average_gift_value'] as num).toDouble(),
+      title: json['title']?.toString() ?? '',
+      id: json['id']?.toString(),
+      image: json['image_url']?.toString(),
+      address: json['address']?.toString() ?? '',
+      date: parsedDate,
+      time: json['event_time']?.toString() ?? '',
+      attendanceCount: parseInt(json['attendance_count']),
+      budget: parseInt(json['budget']),
+      invitedCount: parseInt(json['invited_count']),
+      giftsCount: parseInt(json['gifts_count']),
+      totalGiftAmount: parseDouble(json['total_gift_amount']),
+      averageGiftValue: parseDouble(json['average_gift_value']),
     );
   }
 
