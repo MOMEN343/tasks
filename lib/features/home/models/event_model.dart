@@ -1,6 +1,6 @@
 class EventModel {
   final String title;
-  final String id;
+  final String? id;
   final String? image;
   final String address;
   final DateTime date;
@@ -14,7 +14,7 @@ class EventModel {
 
   EventModel({
     required this.title,
-    required this.id,
+    this.id,
     required this.image,
     required this.address,
     required this.date,
@@ -29,12 +29,12 @@ class EventModel {
 
   factory EventModel.fromJson(Map<String, dynamic> json) {
     return EventModel(
-      title: json['title'] as String,
-      id: json['id'] as String,
+      title: json['title'] as String? ?? '',
+      id: json['id'] as String?,
       image: json['image_url'] as String?,
-      address: json['address'] as String,
+      address: json['address'] as String? ?? '',
       date: DateTime.parse(json['event_date'] as String),
-      time: json['event_time'] as String,
+      time: json['event_time'] as String? ?? '',
       attendanceCount: json['attendance_count'] as int,
       budget: (json['budget'] as num).toInt(),
       invitedCount: json['invited_count'] as int,
@@ -42,5 +42,21 @@ class EventModel {
       totalGiftAmount: (json['total_gift_amount'] as num).toDouble(),
       averageGiftValue: (json['average_gift_value'] as num).toDouble(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "title": title,
+      "image_url": image,
+      "address": address,
+      "event_date": date.toIso8601String().split('T')[0],
+      "event_time": time,
+      "attendance_count": attendanceCount,
+      "budget": budget,
+      "invited_count": invitedCount,
+      "gifts_count": giftsCount,
+      "total_gift_amount": totalGiftAmount,
+      "average_gift_value": averageGiftValue,
+    };
   }
 }
