@@ -1,104 +1,71 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tasks/features/home/data/event_data.dart';
-import 'package:tasks/features/home/data/events_service.dart';
-import 'package:tasks/features/home/models/event_model.dart';
+import 'package:tasks/features/home/utils/event_filter.dart';
 import 'package:tasks/features/home/widgets/event_card.dart';
+import 'package:tasks/features/home/providers/events_notifier.dart';
+import 'package:tasks/core/errors/app_exception.dart';
 
-class CurrentEvents extends StatefulWidget {
-  final int refreshKey;
-
-  const CurrentEvents({super.key, required this.refreshKey});
+class CurrentEvents extends ConsumerStatefulWidget {
+  const CurrentEvents({super.key});
 
   @override
-  State<CurrentEvents> createState() => _CurrentEvents();
+  ConsumerState<CurrentEvents> createState() => _CurrentEvents();
 }
 
-class _CurrentEvents extends State<CurrentEvents> {
-  List<EventModel> events = [];
-  bool isLoading = true;
-  String? errorMessage;
-  final today = DateUtils.dateOnly(DateTime.now());
-
-  @override
-  void initState() {
-    super.initState();
-    getEvents();
-  }
-
-  @override
-  void didUpdateWidget(covariant CurrentEvents oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.refreshKey != widget.refreshKey) {
-      getEvents();
-    }
-  }
-
-  Future getEvents() async {
-    try {
-      final response = await EventsService().getEvents();
-
-      if (!mounted) return;
-      setState(() {
-        events = response;
-        events = events.where((event) {
-          return !DateUtils.dateOnly(event.date).isBefore(today);
-        }).toList();
-        isLoading = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-
-      setState(() {
-        errorMessage = e.toString();
-        debugPrint(errorMessage.toString());
-        isLoading = false;
-      });
-    }
-  }
-
+class _CurrentEvents extends ConsumerState<CurrentEvents> {
   @override
   Widget build(BuildContext context) {
+    final eventsAsync = ref.watch(eventsNotifierProvider);
+
     return SingleChildScrollView(
       padding: EdgeInsets.only(top: 31),
-      child: Column(
-        spacing: 10,
+      child: eventsAsync.when(
+        loading: () => Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            width: double.infinity,
+            height: 180,
+            color: Colors.white,
+          ),
+        ),
+        error: (error, stackTrace) {
+          final message = error is AppException
+              ? error.message
+              : 'حدث خطأ، يرجى المحاولة مرة أخرى';
 
-        children: [
-          if (isLoading)
-            Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
-              child: Container(
-                width: double.infinity,
-                height: 180,
-                color: Colors.white,
-              ),
-            )
-          else if (errorMessage != null)
-            Text('حدث خطأ: $errorMessage')
-          else if (events.isEmpty)
-            const Center(child: Text('لا توجد مناسبات حاليًا'))
-          else
-            ...events.map(
-              (event) => EventCard(
-                image: event.image,
-                name: event.title,
-                address: event.address,
-                eventDate: event.date,
-                time: event.time,
-                attendanceCount: event.attendanceCount,
-                budget: event.budget,
-                invitedCount: event.invitedCount,
-                giftsCount: event.giftsCount,
-                totalGiftAmount: event.totalGiftAmount,
-                averageGiftValue: event.averageGiftValue,
-              ),
-            ),
-        ],
+          return Text('حدث خطأ: $message');
+        },
+
+        data: (allEvents) {
+          final events = getCurrentEvents(allEvents);
+
+          if (events.isEmpty) {
+            return const Center(child: Text('لا توجد مناسبات حالياً'));
+          }
+          return Column(
+            spacing: 10,
+            children: events
+                .map(
+                  (event) => EventCard(
+                    id: event.id!,
+                    image: event.image,
+                    name: event.title,
+                    address: event.address,
+                    eventDate: event.date,
+                    time: event.time,
+                    attendanceCount: event.attendanceCount,
+                    budget: event.budget,
+                    invitedCount: event.invitedCount,
+                    giftsCount: event.giftsCount,
+                    totalGiftAmount: event.totalGiftAmount,
+                    averageGiftValue: event.averageGiftValue,
+                  ),
+                )
+                .toList(),
+          );
+        },
       ),
     );
   }

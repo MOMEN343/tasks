@@ -5,13 +5,13 @@ import 'package:shimmer/shimmer.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_font_family.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
-import 'package:tasks/features/home/data/event_data.dart';
 import 'package:tasks/features/home/managers/manager_date.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
 import 'package:tasks/features/home/screens/event_details_screen.dart';
 
 class EventCard extends StatelessWidget {
+  final String id;
   final String? image;
   final String name;
   final DateTime eventDate;
@@ -41,6 +41,7 @@ class EventCard extends StatelessWidget {
     required this.totalGiftAmount,
     required this.averageGiftValue,
     required this.address,
+    required this.id,
   });
 
   @override
@@ -253,6 +254,7 @@ class EventCard extends StatelessWidget {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => EventDetailsScreen(
+                          eventId: id,
                           title: name,
                           date: eventDate,
                           time: time,
@@ -263,6 +265,7 @@ class EventCard extends StatelessWidget {
                           image: image,
                           totalGiftAmount: totalGiftAmount,
                           averageGiftValue: averageGiftValue,
+                          address: address,
                         ),
                       ),
                     );

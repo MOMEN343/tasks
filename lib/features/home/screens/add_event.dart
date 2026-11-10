@@ -5,20 +5,24 @@ import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/core/widgets/login_button.dart';
 import 'package:tasks/features/home/managers/manager_font_size.dart';
 import 'package:tasks/features/home/managers/manages_text_styles.dart';
+import 'package:tasks/features/home/models/event_model.dart';
 import 'package:tasks/features/home/widgets/count_container.dart';
 import 'package:tasks/features/home/widgets/text_form_feild.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tasks/features/home/providers/events_notifier.dart';
 
-class AddEvent extends StatefulWidget {
-  const AddEvent({super.key});
-
+class AddEvent extends ConsumerStatefulWidget {
+  final EventModel? event;
+  const AddEvent({super.key, this.event});
   @override
-  State<StatefulWidget> createState() => _AddEvent();
+  ConsumerState<AddEvent> createState() => _AddEvent();
 }
 
-class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
+class _AddEvent extends ConsumerState<AddEvent>
+    with SingleTickerProviderStateMixin {
   TabController? tabController;
   int count = 0;
   GlobalKey<FormState> formkey = GlobalKey();
@@ -39,6 +43,20 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
     super.initState();
 
     tabController = TabController(length: 2, vsync: this);
+    final event = widget.event;
+
+    if (event != null) {
+      titleController.text = event.title;
+      dateController.text =
+          '${event.date.day.toString().padLeft(2, '0')}-'
+          '${event.date.month.toString().padLeft(2, '0')}-'
+          '${event.date.year}';
+      timeController.text = event.time;
+      addressController.text = event.address;
+      selectedEventDate = event.date;
+      count = event.invitedCount;
+      uploadedImageUrl = event.image;
+    }
   }
 
   Future<void> pickImage() async {
@@ -285,6 +303,17 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                                                     BorderRadius.circular(12),
                                                 child: Image.memory(
                                                   selectedImageBytes!,
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                            : uploadedImageUrl != null &&
+                                                  uploadedImageUrl!.isNotEmpty
+                                            ? ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                child: Image.network(
+                                                  uploadedImageUrl!,
                                                   width: double.infinity,
                                                   fit: BoxFit.cover,
                                                 ),
@@ -856,31 +885,36 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                         isLoading = true;
                       });
                       try {
-                        final imageUrl = await uploadSelectedImage();
+                        final imageUrl = selectedImageBytes != null
+                            ? await uploadSelectedImage()
+                            : uploadedImageUrl;
 
-                        final supabase = Supabase.instance.client;
-                        final user = supabase.auth.currentUser;
-
-                        if (user == null) {
-                          throw Exception('يجب تسجيل الدخول أولاً');
-                        }
                         try {
-                          await supabase.from('events').insert({
-                            'title': titleController.text.trim(),
-                            'image_url': imageUrl,
-                            'address': addressController.text.trim(),
-                            'event_date': selectedEventDate!
-                                .toIso8601String()
-                                .split('T')[0],
-                            'event_time': timeController.text.trim(),
-                            'attendance_count': 0,
-                            'budget': 0,
-                            'invited_count': count,
-                            'gifts_count': 0,
-                            'total_gift_amount': 0.0,
-                            'average_gift_value': 0.0,
-                            'user_id': user.id,
-                          });
+                          EventModel event = EventModel(
+                            id: widget.event?.id,
+                            title: titleController.text,
+                            image: imageUrl,
+                            address: addressController.text,
+                            date: selectedEventDate!,
+                            time: timeController.text.trim(),
+                            invitedCount: count,
+                            attendanceCount: widget.event?.attendanceCount ?? 0,
+                            budget: widget.event?.budget ?? 0,
+                            giftsCount: widget.event?.giftsCount ?? 0,
+                            totalGiftAmount:
+                                widget.event?.totalGiftAmount ?? 0.0,
+                            averageGiftValue:
+                                widget.event?.averageGiftValue ?? 0.0,
+                          );
+                          if (widget.event == null) {
+                            await ref
+                                .read(eventsNotifierProvider.notifier)
+                                .addEvent(event);
+                          } else {
+                            await ref
+                                .read(eventsNotifierProvider.notifier)
+                                .updateEvent(event);
+                          }
                         } catch (e) {
                           if (uploadedImagePath != null) {
                             try {
@@ -902,7 +936,11 @@ class _AddEvent extends State<AddEvent> with SingleTickerProviderStateMixin {
                       } catch (e) {
                         if (!mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('فشلت إضافة المناسبة: $e')),
+                          SnackBar(
+                            content: Text(
+                              'فشلت ${widget.event == null ? 'إضافة' : 'تعديل'} المناسبة: $e',
+                            ),
+                          ),
                         );
                       } finally {
                         if (mounted) {

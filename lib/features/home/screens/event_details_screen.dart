@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasks/core/managers/manager_colors.dart';
 import 'package:tasks/core/managers/manager_strings.dart';
 import 'package:tasks/features/home/managers/manager_date.dart';
+import 'package:tasks/features/home/models/event_model.dart';
+import 'package:tasks/features/home/providers/events_notifier.dart';
+import 'package:tasks/features/home/screens/add_event.dart';
 import 'package:tasks/features/home/widgets/attendance_view.dart';
 import 'package:tasks/features/home/widgets/gifts_view.dart';
 import 'package:tasks/features/home/widgets/statistics_card.dart';
 import 'package:tasks/features/wallet/widgets/ryal_image.dart';
 import 'package:tasks/features/wallet/widgets/top_part.dart';
 
-class EventDetailsScreen extends StatefulWidget {
+class EventDetailsScreen extends ConsumerStatefulWidget {
+  final String eventId;
   final String title;
   final DateTime date;
   final String time;
@@ -19,6 +24,7 @@ class EventDetailsScreen extends StatefulWidget {
   final String? image;
   final double totalGiftAmount;
   final double averageGiftValue;
+  final String address;
 
   const EventDetailsScreen({
     super.key,
@@ -32,13 +38,15 @@ class EventDetailsScreen extends StatefulWidget {
     required this.image,
     required this.totalGiftAmount,
     required this.averageGiftValue,
+    required this.eventId,
+    required this.address,
   });
 
   @override
-  State<EventDetailsScreen> createState() => _EventDetailsScreen();
+  ConsumerState<EventDetailsScreen> createState() => _EventDetailsScreen();
 }
 
-class _EventDetailsScreen extends State<EventDetailsScreen>
+class _EventDetailsScreen extends ConsumerState<EventDetailsScreen>
     with SingleTickerProviderStateMixin {
   TabController? tabController;
 
@@ -47,6 +55,55 @@ class _EventDetailsScreen extends State<EventDetailsScreen>
     super.initState();
 
     tabController = TabController(length: 2, vsync: this);
+  }
+
+  Future<void> editEvent() async {
+    final result = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (context) => AddEvent(
+          event: EventModel(
+            id: widget.eventId,
+            title: widget.title,
+            image: widget.image,
+            address: widget.address,
+            date: widget.date,
+            time: widget.time,
+            attendanceCount: widget.attendanceCount,
+            budget: widget.budget,
+            invitedCount: widget.invitedCount,
+            giftsCount: widget.giftsCount,
+            totalGiftAmount: widget.totalGiftAmount,
+            averageGiftValue: widget.averageGiftValue,
+          ),
+        ),
+      ),
+    );
+
+    if (result == true && mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> deleteEvent() async {
+    try {
+      await ref
+          .read(eventsNotifierProvider.notifier)
+          .deleteEvent(widget.eventId);
+
+      if (!mounted) return;
+
+      Navigator.of(context).pop();
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('تم حذف المناسبة بنجاح')));
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('فشل حذف المناسبة: $e')));
+    }
   }
 
   @override
@@ -72,6 +129,79 @@ class _EventDetailsScreen extends State<EventDetailsScreen>
                     subTitle:
                         "${ManagerDate.formatDate(widget.date)} - ${widget.time}",
                     height: 129,
+                  ),
+
+                  Positioned(
+                    top: 20,
+                    left: 60,
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: editEvent,
+                        icon: const Icon(
+                          Icons.edit_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Positioned(
+                    top: 20,
+                    left: 15,
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.5),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () async {
+                            final confirmed = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: AlertDialog(
+                                  title: const Text('حذف المناسبة'),
+                                  content: const Text(
+                                    'هل أنت متأكد من حذف المناسبة؟',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, false),
+                                      child: const Text('إلغاء'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, true),
+                                      child: const Text('حذف'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+
+                            if (confirmed == true) {
+                              await deleteEvent();
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   Positioned(
                     top: 80,
