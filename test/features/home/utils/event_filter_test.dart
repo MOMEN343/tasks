@@ -57,5 +57,13 @@ void main() {
 
       expect(result, isEmpty);
     });
+
+    test('مناسبة اليوم لا تظهر ضمن المناسبات السابقة', () {
+      final events = [createEvent(today)];
+
+      final result = getPreviousEvents(events);
+
+      expect(result, isEmpty);
+    });
   });
 }

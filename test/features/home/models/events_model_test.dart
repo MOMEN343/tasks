@@ -59,5 +59,31 @@ void main() {
       expect(event.address, '');
       expect(event.time, '');
     });
+
+    test('يتعامل مع الحقول الرقمية الفارغة', () {
+      final event = EventModel.fromJson({
+        'event_date': '2026-11-09',
+        'attendance_count': null,
+        'budget': null,
+        'invited_count': null,
+        'gifts_count': null,
+        'total_gift_amount': null,
+        'average_gift_value': null,
+      });
+
+      expect(event.attendanceCount, 0);
+      expect(event.budget, 0);
+      expect(event.invitedCount, 0);
+      expect(event.giftsCount, 0);
+      expect(event.totalGiftAmount, 0.0);
+      expect(event.averageGiftValue, 0.0);
+    });
+
+    test('يرفض التاريخ غير الصحيح باستثناء واضح', () {
+      expect(
+        () => EventModel.fromJson({'event_date': 'invalid-date'}),
+        throwsA(isA<FormatException>()),
+      );
+    });
   });
 }

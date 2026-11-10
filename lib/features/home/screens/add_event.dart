@@ -10,7 +10,6 @@ import 'package:tasks/features/home/widgets/count_container.dart';
 import 'package:tasks/features/home/widgets/text_form_feild.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tasks/features/home/providers/events_notifier.dart';
 
@@ -30,7 +29,6 @@ class _AddEvent extends ConsumerState<AddEvent>
   XFile? selectedImage;
   Uint8List? selectedImageBytes;
   String? uploadedImageUrl;
-  String? uploadedImagePath;
   DateTime? selectedEventDate;
   bool isLoading = false;
   final titleController = TextEditingController();
@@ -70,33 +68,6 @@ class _AddEvent extends ConsumerState<AddEvent>
       selectedImage = image;
       selectedImageBytes = bytes;
     });
-  }
-
-  Future<String> uploadSelectedImage() async {
-    if (selectedImageBytes == null || selectedImage == null) {
-      throw Exception('يرجى اختيار صورة أولاً');
-    }
-
-    final supabase = Supabase.instance.client;
-    final user = supabase.auth.currentUser;
-
-    if (user == null) {
-      throw Exception('يجب تسجيل الدخول أولاً');
-    }
-
-    final extension = selectedImage!.name.split('.').last;
-    final filePath =
-        '${user.id}/${DateTime.now().millisecondsSinceEpoch}.$extension';
-    uploadedImagePath = filePath;
-    await supabase.storage
-        .from('event-images')
-        .uploadBinary(
-          filePath,
-          selectedImageBytes!,
-          fileOptions: FileOptions(contentType: selectedImage!.mimeType),
-        );
-
-    return supabase.storage.from('event-images').getPublicUrl(filePath);
   }
 
   Future<void> pickEventDate() async {
@@ -874,7 +845,9 @@ class _AddEvent extends ConsumerState<AddEvent>
                     ),
                   ),
                   LoginButton(
-                    textButton: ManagerStrings.confirmAddition,
+                    textButton: widget.event == null
+                        ? ManagerStrings.confirmAddition
+                        : 'تأكيد التعديل',
                     isLoading: isLoading,
                     onPressed: () async {
                       if (isLoading) return;
@@ -885,60 +858,52 @@ class _AddEvent extends ConsumerState<AddEvent>
                         isLoading = true;
                       });
                       try {
-                        final imageUrl = selectedImageBytes != null
-                            ? await uploadSelectedImage()
-                            : uploadedImageUrl;
+                        EventModel event = EventModel(
+                          id: widget.event?.id,
+                          title: titleController.text.trim(),
+                          image: uploadedImageUrl,
+                          address: addressController.text,
+                          date: selectedEventDate!,
+                          time: timeController.text.trim(),
+                          invitedCount: count,
+                          attendanceCount: widget.event?.attendanceCount ?? 0,
+                          budget: widget.event?.budget ?? 0,
+                          giftsCount: widget.event?.giftsCount ?? 0,
+                          totalGiftAmount: widget.event?.totalGiftAmount ?? 0.0,
+                          averageGiftValue:
+                              widget.event?.averageGiftValue ?? 0.0,
+                        );
 
-                        try {
-                          EventModel event = EventModel(
-                            id: widget.event?.id,
-                            title: titleController.text,
-                            image: imageUrl,
-                            address: addressController.text,
-                            date: selectedEventDate!,
-                            time: timeController.text.trim(),
-                            invitedCount: count,
-                            attendanceCount: widget.event?.attendanceCount ?? 0,
-                            budget: widget.event?.budget ?? 0,
-                            giftsCount: widget.event?.giftsCount ?? 0,
-                            totalGiftAmount:
-                                widget.event?.totalGiftAmount ?? 0.0,
-                            averageGiftValue:
-                                widget.event?.averageGiftValue ?? 0.0,
+                        final notifier = ref.read(
+                          eventsNotifierProvider.notifier,
+                        );
+
+                        if (widget.event == null) {
+                          await notifier.addEvent(
+                            event,
+                            imageBytes: selectedImageBytes,
+                            imageName: selectedImage?.name,
+                            imageMimeType: selectedImage?.mimeType,
                           );
-                          if (widget.event == null) {
-                            await ref
-                                .read(eventsNotifierProvider.notifier)
-                                .addEvent(event);
-                          } else {
-                            await ref
-                                .read(eventsNotifierProvider.notifier)
-                                .updateEvent(event);
-                          }
-                        } catch (e) {
-                          if (uploadedImagePath != null) {
-                            try {
-                              await Supabase.instance.client.storage
-                                  .from('event-images')
-                                  .remove([uploadedImagePath!]);
-                              uploadedImagePath = null;
-                            } catch (deleteError) {
-                              debugPrint('فشل حذف الصورة: $deleteError');
-                            }
-                          }
-
-                          rethrow;
+                        } else {
+                          await notifier.updateEvent(
+                            event,
+                            imageBytes: selectedImageBytes,
+                            imageName: selectedImage?.name,
+                            imageMimeType: selectedImage?.mimeType,
+                          );
                         }
-                        uploadedImagePath = null;
+
                         if (!mounted) return;
 
                         Navigator.of(context).pop(true);
                       } catch (e) {
                         if (!mounted) return;
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              'فشلت ${widget.event == null ? 'إضافة' : 'تعديل'} المناسبة: $e',
+                              '${widget.event == null ? 'تعذر إضافة' : 'تعذر تعديل'} المناسبة: $e',
                             ),
                           ),
                         );
